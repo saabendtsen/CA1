@@ -7,9 +7,12 @@ package facades;
 
 import dtos.RenameMeDTO;
 import entities.Hobby;
+import entities.Person;
 import entities.RenameMe;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
+
+import java.util.List;
 
 /**
  *
@@ -19,6 +22,10 @@ public class Populator {
     public static void populate(){
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fe = FacadeExample.getFacadeExample(emf);
+
+        List<Person> personList = null;
+
+        Hobby h1 = new Hobby("Svømning","det er i vand");
 
 
     }

@@ -15,6 +15,11 @@ public class Hobby {
     private List<Person> persons;
 
 
+    public Hobby(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public List<Person> addPersons(Person person) {
        this.persons.add(person);
         return persons;
