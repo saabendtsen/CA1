@@ -14,6 +14,10 @@ public class Phone {
     @ManyToOne
     private Person person;
 
+
+    public Phone() {
+    }
+
     public Long getId() {
         return id;
     }

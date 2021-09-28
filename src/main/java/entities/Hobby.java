@@ -14,6 +14,17 @@ public class Hobby {
     @ManyToMany
     private List<Person> persons;
 
+
+    public List<Person> addPersons(Person person) {
+       this.persons.add(person);
+        return persons;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+
     public String getName() {
         return name;
     }

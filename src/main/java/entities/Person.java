@@ -15,11 +15,14 @@ public class Person {
     @ManyToOne
     private Address address;
 
-    @OneToMany
+    @OneToMany(mappedBy = "person")
     private List<Phone> phone;
 
     @ManyToMany
     private List<Hobby> hobbys;
+
+    public Person() {
+    }
 
     public Long getId() {
         return id;

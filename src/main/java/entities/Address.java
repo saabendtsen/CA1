@@ -12,8 +12,13 @@ public class Address {
     private String street;
     private String additionalInfo;
 
+
+
     @OneToMany
     private List<Person> persons;
+
+    public Address() {
+    }
 
     public Long getId() {
         return id;
