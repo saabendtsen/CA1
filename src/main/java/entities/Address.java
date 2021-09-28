@@ -3,23 +3,17 @@ package entities;
 import javax.persistence.*;
 import java.util.List;
 
-@Table(name = "person")
+@Table(name = "address")
 @Entity
-public class Person {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-
-    @ManyToOne
-    private Address address;
+    private String street;
+    private String additionalInfo;
 
     @OneToMany
-    private List<Phone> phone;
-
-    @ManyToMany
-    private List<Hobby> hobbys;
+    private List<Person> persons;
 
     public Long getId() {
         return id;
