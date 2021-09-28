@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "person")
@@ -16,16 +17,19 @@ public class Person {
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
+
     @ManyToMany
     private List<Hobby> hobbys;
 
     public Person() {
     }
 
+
     public Person(String firstName, String lastName, List<Phone> phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+
     }
 
     public Long getId() {

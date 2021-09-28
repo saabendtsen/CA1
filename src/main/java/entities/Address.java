@@ -15,13 +15,21 @@ public class Address {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
     private List<Person> persons;
 
+    public Address(String street, String additionalInfo, List<Person> persons) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.persons = persons;
+    }
+
     public Address() {
     }
+
 
     public Address(String street, String additionalInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
     }
+
 
     public Long getId() {
         return id;

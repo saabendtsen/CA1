@@ -6,9 +6,13 @@
 package facades;
 
 import dtos.RenameMeDTO;
-import entities.RenameMe;
+import entities.*;
+
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,9 +22,20 @@ public class Populator {
     public static void populate(){
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fe = FacadeExample.getFacadeExample(emf);
-        fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
-        fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
-        fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
+
+        List<Person> personList = new ArrayList<>();
+
+//        //Person person = new Person("August", "niller");
+//        personList.add(person);
+//        Hobby h1 = new Hobby("Svømning","det er i vand");
+//        //person.addHobby(h1);
+//        Phone p1 = new Phone(1235,"Nokia",person);
+//        //person.addPhone(p1);
+//        Address a1 = new Address("Bøgevej","Det er på hjørnet",personList);
+//        person.setAddress(a1);
+//
+//        emf.createEntityManager().persist(person);
+
     }
     
     public static void main(String[] args) {
