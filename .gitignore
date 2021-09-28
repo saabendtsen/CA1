@@ -1,4 +1,5 @@
 **/target/
 **/nb-configuration.xml
+/.idea/compiler.xml
 
 /nbproject/
