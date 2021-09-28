@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author tha
  */
 public class Utility {
-    private static Gson gson = new GsonBuilder().create();
+    private static final Gson gson = new GsonBuilder().create();
     
     public static void printAllProperties() {
             Properties prop = System.getProperties();
