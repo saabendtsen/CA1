@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "hobby")
 @Entity
@@ -10,6 +11,7 @@ public class Hobby {
     private Long id;
     private String name;
     private String description;
+    @ManyToMany
     private List<Person> persons;
 
     public String getName() {
