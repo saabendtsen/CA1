@@ -44,6 +44,12 @@ public class Hobby {
     public Hobby() {
     }
 
+    public Hobby(String name, String description, List<Person> persons) {
+        this.name = name;
+        this.description = description;
+        this.persons = persons;
+    }
+
     public Long getId() {
         return id;
     }

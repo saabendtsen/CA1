@@ -2,7 +2,7 @@ package entities;
 
 import javax.persistence.*;
 
-
+@Table(name = "phone")
 @Entity
 public class Phone {
     @Id
@@ -12,10 +12,17 @@ public class Phone {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "pid")
     private Person person;
 
 
     public Phone() {
+    }
+
+    public Phone(int number, String description, Person person) {
+        this.number = number;
+        this.description = description;
+        this.person = person;
     }
 
     public Long getId() {
@@ -24,5 +31,29 @@ public class Phone {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

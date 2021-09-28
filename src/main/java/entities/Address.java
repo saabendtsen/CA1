@@ -12,12 +12,15 @@ public class Address {
     private String street;
     private String additionalInfo;
 
-
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
     private List<Person> persons;
 
     public Address() {
+    }
+
+    public Address(String street, String additionalInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
     }
 
     public Long getId() {
@@ -27,4 +30,21 @@ public class Address {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
 }
