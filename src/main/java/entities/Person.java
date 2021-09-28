@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "person")
@@ -16,7 +17,7 @@ public class Person {
     private Address address;
 
     @OneToMany(mappedBy = "person")
-    private List<Phone> phone;
+    private List<Phone> phones;
 
     @ManyToMany
     private List<Hobby> hobbys;
@@ -24,12 +25,17 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, Address address, List<Phone> phone, List<Hobby> hobbys) {
+    public Person(String firstName, String lastName, Address address, List<Phone> phones, List<Hobby> hobbys) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.phone = phone;
+        this.phones = phones;
         this.hobbys = hobbys;
+    }
+
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -56,12 +62,15 @@ public class Person {
         this.address = address;
     }
 
-    public List<Phone> getPhone() {
-        return phone;
+    public List<Phone> getPhones() {
+        return phones;
     }
 
-    public void setPhone(List<Phone> phone) {
-        this.phone = phone;
+    public void addPhone(Phone phone) {
+        if(phones == null){
+            this.phones = new ArrayList<>();
+        }
+        this.phones.add(phone);
     }
 
     public List<Hobby> getHobbys() {
@@ -69,6 +78,9 @@ public class Person {
     }
 
     public void addHobby(Hobby hobby) {
+        if(hobbys == null){
+            this.hobbys = new ArrayList<>();
+        }
         this.hobbys.add(hobby);
     }
 
