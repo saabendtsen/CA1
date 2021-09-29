@@ -1,9 +1,13 @@
 package facades;
 
+import dtos.AddressDTO;
+import dtos.PersonDTO;
+import entities.Person;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class PersonFacade {
 
@@ -28,33 +32,38 @@ public class PersonFacade {
         PersonFacade fe = getPersonFacade(emf);
     }
 
-    public void addPerson() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            //em.persist();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        //return new PersonDTO();
+    public PersonDTO createPerson(PersonDTO p) {
+        return null;
     }
 
-    public void editPerson() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Person pp = em.find(Person.class, p.getId());
-            pp.setFirstName(p.getfName());
-            pp.setLastName(p.getlName());
-            pp.setPhone(p.getPhone());
-            pp.setLastEdited(new Date());
-            em.getTransaction().begin();
-            em.merge(pp);
-            em.getTransaction().commit();
-            return p;
-        } finally {
-            em.close();
-        }
+    public PersonDTO readPerson(PersonDTO p) {
+        return null;
+    }
+
+    public PersonDTO updatePerson(PersonDTO p) {
+        return null;
+    }
+
+    public PersonDTO deletePerson(PersonDTO p) {
+        return null;
+    }
+
+    public List<PersonDTO> getAllPersonsWithHobby (PersonDTO p) {
+
+        return null;
+    }
+
+    public List<PersonDTO> getAllPersonInCity(PersonDTO p) {
+
+        return null;
+    }
+
+    public List<PersonDTO> getAllPersonsHobbies(PersonDTO p) {
+        return null;
+    }
+
+    public List<AddressDTO> getAllZipcodes(PersonDTO p) {
+        return null;
     }
 
 }
