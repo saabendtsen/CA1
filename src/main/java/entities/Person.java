@@ -13,7 +13,6 @@ public class Person {
     private String firstName;
     private String lastName;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Paddress")
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
@@ -24,11 +23,12 @@ public class Person {
     }
 
 
-    public Person(String firstName, String lastName, List<Phone> phone) {
+    public Person(String firstName, String lastName, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
-
+        this.address = address;
+        this.phone = new ArrayList<>();
+        this.hobbys = new ArrayList<>();
     }
 
     public Long getId() {
@@ -59,8 +59,11 @@ public class Person {
         return phone;
     }
 
-    public void setPhone(List<Phone> phone) {
-        this.phone = phone;
+    public void addPhone(Phone p) {
+        if(this.phone == null){
+            this.phone = new ArrayList<>();
+        }
+        this.phone.add(p);
     }
 
     public List<Hobby> getHobbys() {

@@ -1,9 +1,10 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "hobby")
+
 @Entity
 public class Hobby {
     @Id
@@ -11,7 +12,7 @@ public class Hobby {
     private Long id;
     private String name;
     private String description;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Person> persons;
 
 
@@ -21,7 +22,10 @@ public class Hobby {
     }
 
     public List<Person> addPersons(Person person) {
-       this.persons.add(person);
+        if (this.persons == null) {
+            this.persons = new ArrayList<>();
+        }
+        this.persons.add(person);
         return persons;
     }
 
