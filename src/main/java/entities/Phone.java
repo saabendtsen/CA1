@@ -19,10 +19,9 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone(int number, String description, Person person) {
+    public Phone(int number, String description) {
         this.number = number;
         this.description = description;
-        this.person = person;
     }
 
     public Long getId() {

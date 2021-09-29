@@ -60,10 +60,10 @@ public class Person {
     }
 
     public void addPhone(Phone p) {
-        if(this.phone == null){
-            this.phone = new ArrayList<>();
+        if(p == null){
+            p.setPerson(this);
+            this.phone.add(p);
         }
-        this.phone.add(p);
     }
 
     public List<Hobby> getHobbies() {

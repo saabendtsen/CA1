@@ -19,13 +19,14 @@ public class Hobby {
     public Hobby(String name, String description) {
         this.name = name;
         this.description = description;
+        this.persons = new ArrayList<>();
     }
 
     public List<Person> addPersons(Person person) {
-        if (this.persons == null) {
-            this.persons = new ArrayList<>();
+        if (person == null) {
+            this.persons.add(person);
+            person.addHobby(this);
         }
-        this.persons.add(person);
         return persons;
     }
 

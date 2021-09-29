@@ -17,13 +17,15 @@ public class EntityTester {
 
         Person person1 = new Person("HEY","TEST",address1);
 
-        phones.add(new Phone(1616, "description",person1));
-        phones.add(new Phone(8888, "description",person1));
+        phones.add(new Phone(1616, "description"));
+        phones.add(new Phone(8888, "description"));
         hobbies.add(new Hobby("svømning","det vådt"));
         hobbies.add(new Hobby("løb", "nederen"));
 
         person1.addHobby(hobbies.get(0));
         person1.addHobby(hobbies.get(1));
+        person1.addPhone(phones.get(0));
+        person1.addPhone(phones.get(1));
 
 
 
