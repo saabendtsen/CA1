@@ -11,11 +11,21 @@ public class EntityTester {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         List<Phone> phones = new ArrayList<>();
+        List<Hobby> hobbies = new ArrayList<>();
 
         Person person1 = new Person("HEY","TEST",phones);
 
         phones.add(new Phone(1616, "description",person1));
+        phones.add(new Phone(8888, "description",person1));
+        hobbies.add(new Hobby("svømning","det vådt"));
 
+        person1.setHobbys(hobbies);
+
+
+
+
+        Address address1 = new Address("Bøgevej","Lige nede af vejen lol");
+        person1.setAddress(address1);
 
         try {
             em.getTransaction().begin();
@@ -27,8 +37,5 @@ public class EntityTester {
         }finally{
             em.close();
         }
-
-
     }
-
 }

@@ -12,13 +12,12 @@ public class Person {
     private Long id;
     private String firstName;
     private String lastName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Paddress")
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Hobby> hobbys;
 
     public Person() {
