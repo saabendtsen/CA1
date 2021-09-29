@@ -8,6 +8,7 @@ import java.util.List;
 
 
 @Entity
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +75,7 @@ public class Person {
     }
 
     public void addPhone(Phone p) {
-        if(p != null){
+        if (p != null) {
             p.setPerson(this);
             this.phone.add(p);
         }
@@ -95,7 +96,7 @@ public class Person {
     }
 
     public void addHobby(Hobby hobby) {
-        if (hobby != null){
+        if (hobby != null) {
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
 
