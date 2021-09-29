@@ -30,6 +30,8 @@ public class EntityTester {
         hobbies.add(new Hobby("svømning", "det vådt"));
         hobbies.add(new Hobby("løb", "nederen"));
 
+        CityInfo cityInfo1 = new CityInfo("3730","Nexø");
+        cityInfo1.addAddress(address1);
         person1.addHobby(hobbies.get(0));
         person2.addHobby(hobbies.get(1));
         person1.addPhone(phones.get(0));
@@ -38,13 +40,14 @@ public class EntityTester {
 
         person1.setAddress(address1);
 
-        PersonDTO pDTO = new PersonDTO(person1);
+//        PersonDTO pDTO = new PersonDTO(person1);
         //System.out.println(gson.toJson(pDTO));
 
         try {
             em.getTransaction().begin();
             em.persist(person1);
             em.persist(person2);
+            em.persist(cityInfo1);
             em.getTransaction().commit();
             //Verify database id
 

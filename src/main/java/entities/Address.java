@@ -16,6 +16,8 @@ public class Address {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
     private List<Person> persons;
+    @ManyToOne
+    private CityInfo cityInfo;
 
     public Address(String street, String additionalInfo, List<Person> persons) {
         this.street = street;
@@ -26,6 +28,14 @@ public class Address {
     public Address() {
     }
 
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
 
     public Address(String street, String additionalInfo) {
         this.street = street;
