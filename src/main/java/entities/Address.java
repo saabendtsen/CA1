@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "address")
@@ -29,15 +30,18 @@ public class Address {
     public Address(String street, String additionalInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
+        this.persons = new ArrayList<>();
     }
-
 
     public List<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void addPersons(Person person) {
+        this.persons.add(person);
+        if(person != null){
+            person.setAddress(this);
+        }
     }
 
     public Long getId() {

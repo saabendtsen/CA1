@@ -34,7 +34,7 @@ class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try{
             Address a1 = new Address("Nørregade","lige på hjørnet");
-            Person p1 = new Person("Peter","Mogensen",a1);
+            Person p1 = new Person("Peter","Mogensen");
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();

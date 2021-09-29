@@ -14,14 +14,12 @@ public class HobbyDTO {
     private Long id;
     private String name;
     private String description;
-    private List<PersonDTO> persons;
 
 
     public HobbyDTO(Hobby hobby) {
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
-        this.persons = PersonDTO.getDtos(hobby.getPersons());
     }
 
     public static List<HobbyDTO> getDtos(List<Hobby> p){
@@ -54,11 +52,4 @@ public class HobbyDTO {
         this.description = description;
     }
 
-    public List<PersonDTO> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<PersonDTO> persons) {
-        this.persons = persons;
-    }
 }

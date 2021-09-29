@@ -13,8 +13,10 @@ public class Person {
     private Long id;
     private String firstName;
     private String lastName;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne
     private Address address;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "persons")
@@ -23,11 +25,14 @@ public class Person {
     public Person() {
     }
 
+//    public Person(String firstName, String lastName) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//    }
 
-    public Person(String firstName, String lastName, Address address) {
+    public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
         this.phone = new ArrayList<>();
         this.hobbies = new ArrayList<>();
     }
@@ -61,9 +66,9 @@ public class Person {
     }
 
     public void addPhone(Phone p) {
+        this.phone.add(p);
         if(p != null){
             p.setPerson(this);
-            this.phone.add(p);
         }
     }
 
@@ -85,5 +90,13 @@ public class Person {
             hobby.getPersons().add(this);
 
         }
+    }
+
+    public void setPhone(List<Phone> phone) {
+        this.phone = phone;
+    }
+
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 }

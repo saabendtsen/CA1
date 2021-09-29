@@ -13,7 +13,6 @@ public class Phone {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "pid")
     private Person person;
 
 
