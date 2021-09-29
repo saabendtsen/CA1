@@ -38,8 +38,9 @@ public class Address {
     }
 
     public void addPerson(Person person) {
+        this.persons.add(person);
         if(person != null){
-            this.persons.add(person);
+            person.setAddress(this);
         }
     }
 

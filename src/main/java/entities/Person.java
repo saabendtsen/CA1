@@ -76,7 +76,6 @@ public class Person {
 
     public void setAddress(Address address) {
         if (address != null) {
-            address.addPerson(this);
             this.address = address;
         }
     }
