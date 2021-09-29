@@ -73,7 +73,7 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO deletePerson(int id) throws Exception {
+    public PersonDTO deletePerson(long id) throws Exception {
         EntityManager em = emf.createEntityManager();
         Person person;
         try {
