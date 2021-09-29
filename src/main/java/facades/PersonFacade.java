@@ -47,7 +47,7 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO getSinglePerson(int id) throws Exception {
+    public PersonDTO getSinglePerson(long id) throws Exception {
         EntityManager em = emf.createEntityManager();
         Person p = em.find(Person.class, id);
         if (p == null) {
