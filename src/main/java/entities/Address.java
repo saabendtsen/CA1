@@ -31,6 +31,14 @@ public class Address {
     }
 
 
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
     public Long getId() {
         return id;
     }
