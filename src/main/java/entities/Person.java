@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "person")
+
 @Entity
 public class Person {
     @Id
@@ -16,8 +16,8 @@ public class Person {
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Hobby> hobbys;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "persons")
+    private List<Hobby> hobbies;
 
     public Person() {
     }
@@ -28,7 +28,7 @@ public class Person {
         this.lastName = lastName;
         this.address = address;
         this.phone = new ArrayList<>();
-        this.hobbys = new ArrayList<>();
+        this.hobbies = new ArrayList<>();
     }
 
     public Long getId() {
@@ -66,8 +66,8 @@ public class Person {
         this.phone.add(p);
     }
 
-    public List<Hobby> getHobbys() {
-        return hobbys;
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
 
     public Address getAddress() {
@@ -78,7 +78,11 @@ public class Person {
         this.address = address;
     }
 
-    public void setHobbys(List<Hobby> hobbys) {
-        this.hobbys = hobbys;
+    public void addHobby(Hobby hobby) {
+        if (this.hobbies == null){
+            this.hobbies = new ArrayList<>();
+        }
+        hobby.addPersons(this);
+        hobbies.add(hobby);
     }
 }

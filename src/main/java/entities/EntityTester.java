@@ -22,7 +22,8 @@ public class EntityTester {
         hobbies.add(new Hobby("svømning","det vådt"));
         hobbies.add(new Hobby("løb", "nederen"));
 
-        person1.setHobbys(hobbies);
+        person1.addHobby(hobbies.get(0));
+        person1.addHobby(hobbies.get(1));
 
 
 
