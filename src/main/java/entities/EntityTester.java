@@ -23,6 +23,7 @@ public class EntityTester {
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
 
         Person person1 = new Person("HEY", "TEST", address1);
+        Person person2 = new Person("HEY2", "TEST2", address1);
 
         phones.add(new Phone(1616, "description"));
         phones.add(new Phone(8888, "description"));
@@ -30,7 +31,7 @@ public class EntityTester {
         hobbies.add(new Hobby("løb", "nederen"));
 
         person1.addHobby(hobbies.get(0));
-        person1.addHobby(hobbies.get(1));
+        person2.addHobby(hobbies.get(1));
         person1.addPhone(phones.get(0));
         person1.addPhone(phones.get(1));
 
@@ -38,11 +39,12 @@ public class EntityTester {
         person1.setAddress(address1);
 
         PersonDTO pDTO = new PersonDTO(person1);
-        System.out.println(gson.toJson(pDTO));
+        //System.out.println(gson.toJson(pDTO));
 
         try {
             em.getTransaction().begin();
             em.persist(person1);
+            em.persist(person2);
             em.getTransaction().commit();
             //Verify database id
 
@@ -50,7 +52,7 @@ public class EntityTester {
             PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
 
-            System.out.println(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0))));
+            System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(1)))));
 
 
         } finally {
