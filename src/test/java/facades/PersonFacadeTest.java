@@ -2,13 +2,17 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.*;
+import entities.Address;
+import entities.Hobby;
+import entities.Person;
+import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PersonFacadeTest {
 
@@ -61,13 +65,32 @@ class PersonFacadeTest {
     }
 
     @Test
-    void createPerson() {
+    void createPerson() throws Exception {
+
+        Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
+        Person person1 = new Person("Jens", "hansen");
+
+        //address1.addPerson(person1);
+        person1.setAddress(address1);
+
+        Hobby h1 = new Hobby("svømning", "det vådt");
+        person1.addHobby(h1);
+
+        Phone p1 = new Phone(8888, "description");
+        person1.addPhone(p1);
+
+
+        PersonDTO actual = facade.createPerson(new PersonDTO(person1));
+
+        assertEquals(actual.getFirstName(), person1.getFirstName());
+
+
+
     }
 
     @Test
     void readPerson() throws Exception {
         PersonDTO pDTO = facade.getSinglePerson(1);
-        
         assertEquals(pDTO.getId(),1);
     }
 
