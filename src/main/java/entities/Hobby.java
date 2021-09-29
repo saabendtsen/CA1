@@ -23,7 +23,7 @@ public class Hobby {
     }
 
     public List<Person> addPersons(Person person) {
-        if (person == null) {
+        if (person != null) {
             this.persons.add(person);
             person.addHobby(this);
         }

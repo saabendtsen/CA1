@@ -60,7 +60,7 @@ public class Person {
     }
 
     public void addPhone(Phone p) {
-        if(p == null){
+        if(p != null){
             p.setPerson(this);
             this.phone.add(p);
         }
@@ -79,7 +79,7 @@ public class Person {
     }
 
     public void addHobby(Hobby hobby) {
-        if (this.hobbies == null){
+        if (this.hobbies != null){
             this.hobbies = new ArrayList<>();
         }
         hobby.addPersons(this);
