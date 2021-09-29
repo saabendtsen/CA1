@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.PersonDTO;
 import entities.Address;
 import entities.Person;
 import org.junit.jupiter.api.*;
@@ -56,7 +57,10 @@ class PersonFacadeTest {
     }
 
     @Test
-    void readPerson() {
+    void readPerson() throws Exception {
+        PersonDTO pDTO = facade.getSinglePerson(1);
+        
+        assertEquals(pDTO.getId(),1);
     }
 
     @Test
