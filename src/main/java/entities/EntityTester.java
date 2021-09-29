@@ -40,7 +40,8 @@ public class EntityTester {
         person1.setAddress(address1);
 
         PersonDTO pDTO = new PersonDTO(person1);
-        System.out.println(pDTO);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(pDTO));
 
         try {
             em.getTransaction().begin();
