@@ -37,7 +37,7 @@ public class PersonFacade {
         if (p.getFirstName() == null || p.getLastName() == null ) {
             throw new Exception("Fields are missing!");
         }
-        Person person = new Person(p.getFirstName(), p.getLastName());
+        Person person = new Person(p);
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
