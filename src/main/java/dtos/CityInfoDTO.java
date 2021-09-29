@@ -1,10 +1,13 @@
 package dtos;
 
 import entities.Address;
+import entities.CityInfo;
+import entities.Person;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CityInfoDTO {
@@ -17,6 +20,18 @@ public class CityInfoDTO {
         this.id = id;
         this.zipcode = zipcode;
         this.city = city;
+    }
+
+    public CityInfoDTO(CityInfo c) {
+        this.id = c.getId();
+        this.zipcode = c.getZipcode();
+        this.city = c.getCity();
+    }
+
+    public static List<CityInfoDTO> getDtos(List<CityInfo> c){
+        List<CityInfoDTO> cdtos = new ArrayList();
+        c.forEach(rm -> cdtos.add(new CityInfoDTO(rm)));
+        return cdtos;
     }
 
     public Long getId() {
