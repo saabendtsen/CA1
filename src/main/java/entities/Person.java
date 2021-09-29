@@ -75,7 +75,9 @@ public class Person {
     }
 
     public void setAddress(Address address) {
-        this.address = address;
+        if (address != null) {
+            this.address = address;
+        }
     }
 
     public void addHobby(Hobby hobby) {

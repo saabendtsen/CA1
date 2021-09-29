@@ -1,5 +1,10 @@
 package entities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dtos.PersonDTO;
+import utils.Utility;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -8,6 +13,9 @@ import java.util.List;
 
 public class EntityTester {
     public static void main(String[] args) {
+        final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         List<Phone> phones = new ArrayList<>();
@@ -30,6 +38,10 @@ public class EntityTester {
 
 
         person1.setAddress(address1);
+
+        PersonDTO pDTO = new PersonDTO(person1);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(pDTO));
 
         try {
             em.getTransaction().begin();
