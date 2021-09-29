@@ -11,7 +11,8 @@ public class PersonFacade {
     private static EntityManagerFactory emf;
 
     //Private Constructor to ensure Singleton
-    private PersonFacade() {}
+    private PersonFacade() {
+    }
 
     public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
         if (instance == null) {
@@ -21,9 +22,6 @@ public class PersonFacade {
         return instance;
     }
 
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
 
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();

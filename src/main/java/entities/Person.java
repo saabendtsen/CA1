@@ -82,6 +82,7 @@ public class Person {
         if (hobby != null){
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
+
         }
     }
 }
