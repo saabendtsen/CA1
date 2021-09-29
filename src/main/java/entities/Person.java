@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.PersonDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Person {
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
+
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "persons")
     private List<Hobby> hobbies;
 
@@ -29,6 +32,17 @@ public class Person {
         this.address = address;
         this.phone = new ArrayList<>();
         this.hobbies = new ArrayList<>();
+    }
+
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Person dtoPerson(PersonDTO dto){
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        return this;
     }
 
     public Long getId() {

@@ -2,7 +2,6 @@ package dtos;
 
 
 import entities.Person;
-import entities.RenameMe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class PersonDTO {
 
     public static List<PersonDTO> getDtos(List<Person> p){
         List<PersonDTO> pdtos = new ArrayList();
-        p.forEach(rm->pdtos.add(new PersonDTO(rm)));
+        p.forEach(rm -> pdtos.add(new PersonDTO(rm)));
         return pdtos;
     }
 
@@ -79,5 +78,18 @@ public class PersonDTO {
 
     public void setHobbies(List<HobbyDTO> hobbies) {
         this.hobbies = hobbies;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("PersonDTO{");
+        sb.append("id=").append(id);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", address=").append(address);
+        sb.append(", phones=").append(phones);
+        sb.append(", hobbies=").append(hobbies);
+        sb.append('}');
+        return sb.toString();
     }
 }

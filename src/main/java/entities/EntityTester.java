@@ -1,5 +1,10 @@
 package entities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dtos.HobbyDTO;
+import facades.PersonFacade;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -8,6 +13,7 @@ import java.util.List;
 
 public class EntityTester {
     public static void main(String[] args) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         List<Phone> phones = new ArrayList<>();
@@ -29,6 +35,7 @@ public class EntityTester {
 
 
 
+
         person1.setAddress(address1);
 
         try {
@@ -36,7 +43,15 @@ public class EntityTester {
             em.persist(person1);
             em.getTransaction().commit();
             //Verify database id
-            System.out.println(person1.getFirstName());
+
+
+
+            PersonFacade pf = PersonFacade.getPersonFacade(emf);
+
+
+            System.out.println(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0))));
+
+
 
         }finally{
             em.close();
