@@ -15,7 +15,6 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-
     public static PersonFacade getFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;

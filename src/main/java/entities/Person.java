@@ -75,7 +75,10 @@ public class Person {
     }
 
     public void setAddress(Address address) {
-        this.address = address;
+        if (address != null) {
+            address.addPerson(this);
+            this.address = address;
+        }
     }
 
     public void addHobby(Hobby hobby) {
