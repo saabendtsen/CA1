@@ -47,7 +47,7 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO getSinglePerson(int id) throws Exception {
+    public PersonDTO getSinglePerson(long id) throws Exception {
         EntityManager em = emf.createEntityManager();
         Person p = em.find(Person.class, id);
         if (p == null) {
@@ -73,7 +73,7 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO deletePerson(int id) throws Exception {
+    public PersonDTO deletePerson(long id) throws Exception {
         EntityManager em = emf.createEntityManager();
         Person person;
         try {
@@ -105,17 +105,19 @@ public class PersonFacade {
         return PersonDTO.getDtos(persons);
     }
 
-    public List<PersonDTO> getAllPersonInCity(PersonDTO p) {
-
-        return null;
+    public List<PersonDTO> getAllPersonInCity() { //CityInfoDTO c
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Person> query = em.createQuery("SELECT a FROM Address a WHERE a.cityinfo.city = :city", Person.class);
+        query.setParameter("city", 1111111);
+        List<Person> personList = query.getResultList();
+        return PersonDTO.getDtos(personList);
     }
 
-    public List<PersonDTO> getAllPersonsHobbies(PersonDTO p) {
-        return null;
-    }
-
-    public List<AddressDTO> getAllZipcodes(PersonDTO p) {
-        return null;
+    public List<ZipCodes> getAllZipcodes() {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<CityInfo> query = em.createQuery("SELECT c.zipcodes FROM CityInfo c", CityInfo.class);
+        List<ZipCodes> zipcodes = query.getResultList();
+        return zipcodes;
     }
 
 }
