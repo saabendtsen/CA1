@@ -17,7 +17,6 @@ public class PhoneDTO {
         this.id = p.getId();
         this.number = p.getNumber();
         this.description = p.getDescription();
-        this.person = new PersonDTO(p.getPerson());
     }
 
     public static List<PhoneDTO> getDtos(List<Phone> p){

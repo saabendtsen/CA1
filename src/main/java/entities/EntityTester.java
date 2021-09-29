@@ -3,6 +3,7 @@ package entities;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.HobbyDTO;
+import dtos.PersonDTO;
 import facades.PersonFacade;
 
 import javax.persistence.EntityManager;
@@ -19,13 +20,13 @@ public class EntityTester {
         List<Phone> phones = new ArrayList<>();
         List<Hobby> hobbies = new ArrayList<>();
 
-        Address address1 = new Address("Bøgevej","Lige nede af vejen lol");
+        Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
 
-        Person person1 = new Person("HEY","TEST",address1);
+        Person person1 = new Person("HEY", "TEST", address1);
 
         phones.add(new Phone(1616, "description"));
         phones.add(new Phone(8888, "description"));
-        hobbies.add(new Hobby("svømning","det vådt"));
+        hobbies.add(new Hobby("svømning", "det vådt"));
         hobbies.add(new Hobby("løb", "nederen"));
 
         person1.addHobby(hobbies.get(0));
@@ -34,9 +35,10 @@ public class EntityTester {
         person1.addPhone(phones.get(1));
 
 
-
-
         person1.setAddress(address1);
+
+        PersonDTO pDTO = new PersonDTO(person1);
+        System.out.println(gson.toJson(pDTO));
 
         try {
             em.getTransaction().begin();
@@ -45,15 +47,13 @@ public class EntityTester {
             //Verify database id
 
 
-
             PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
 
             System.out.println(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0))));
 
 
-
-        }finally{
+        } finally {
             em.close();
         }
     }

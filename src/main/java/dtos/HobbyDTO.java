@@ -21,7 +21,6 @@ public class HobbyDTO {
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
-        this.persons = PersonDTO.getDtos(hobby.getPersons());
     }
 
     public static List<HobbyDTO> getDtos(List<Hobby> p){

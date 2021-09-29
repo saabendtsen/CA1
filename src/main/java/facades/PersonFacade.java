@@ -21,7 +21,9 @@ public class PersonFacade {
     private PersonFacade() {
     }
 
+
     public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
+
         if (instance == null) {
             emf = _emf;
             instance = new PersonFacade();

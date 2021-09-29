@@ -15,7 +15,6 @@ public class Phone {
     @JoinColumn(name = "pid")
     private Person person;
 
-
     public Phone() {
     }
 
