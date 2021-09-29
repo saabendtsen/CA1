@@ -11,7 +11,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PersonFacadeTest {
 
@@ -58,7 +58,10 @@ class PersonFacadeTest {
     void createPerson() throws Exception {
 
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
-        Person person1 = new Person("Jens","hansen",address1);
+        Person person1 = new Person("Jens", "hansen");
+
+        //address1.addPerson(person1);
+        person1.setAddress(address1);
 
         Hobby h1 = new Hobby("svømning", "det vådt");
         person1.addHobby(h1);
@@ -66,9 +69,10 @@ class PersonFacadeTest {
         Phone p1 = new Phone(8888, "description");
         person1.addPhone(p1);
 
+
         PersonDTO actual = facade.createPerson(new PersonDTO(person1));
 
-        assertEquals(actual.getFirstName(),person1.getFirstName());
+        assertEquals(actual.getFirstName(), person1.getFirstName());
 
 
 

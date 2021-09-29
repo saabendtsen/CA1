@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.AddressDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,11 @@ public class Address {
         this.street = street;
         this.additionalInfo = additionalInfo;
         this.persons = new ArrayList<>();
+    }
+
+    public Address(AddressDTO address) {
+        this.street = address.getStreet();
+        this.additionalInfo = address.getAdditionalInfo();
     }
 
 
