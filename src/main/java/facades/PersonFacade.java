@@ -1,6 +1,5 @@
 package facades;
 
-import com.sun.javaws.exceptions.ExitException;
 import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
