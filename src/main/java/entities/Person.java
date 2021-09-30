@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
+@NamedNativeQuery(name = "Person.resetAutoI", query = "ALTER table PERSON AUTO_INCREMENT = 1")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

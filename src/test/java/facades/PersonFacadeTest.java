@@ -2,10 +2,6 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.*;
-import entities.Address;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -37,21 +33,16 @@ class PersonFacadeTest {
     void setUp() {
         EntityManager em = emf.createEntityManager();
         try{
-            Address a1 = new Address("hej","s");
-            Person person = new Person("hej","hasd",a1);
-            Hobby hobby = new Hobby("Skydning","Skyd Søren i dilleren");
+            Address a1 = new Address("hej", "s");
+            Person person = new Person("hej", "hasd", a1);
+            Hobby hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
             person.addHobby(hobby);
-            Phone phone = new Phone(75849232,"Jojo");
+            Phone phone = new Phone(75849232, "Jojo");
             person.addPhone(phone);
-            CityInfo cityInfo = new CityInfo("3730","Nexø");
+            CityInfo cityInfo = new CityInfo("3730", "Nexø");
             cityInfo.addAddress(a1);
 
             em.getTransaction().begin();
-//            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.persist(cityInfo);
             em.persist(person);
             em.getTransaction().commit();
@@ -62,6 +53,19 @@ class PersonFacadeTest {
 
     @AfterEach
     void tearDown() {
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.resetAutoI").executeUpdate();
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
     }
 
     @Test
@@ -81,7 +85,6 @@ class PersonFacadeTest {
 
 
         PersonDTO actual = facade.createPerson(new PersonDTO(person1));
-
         assertEquals(actual.getFirstName(), person1.getFirstName());
 
 
