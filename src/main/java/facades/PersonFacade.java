@@ -1,10 +1,13 @@
 package facades;
 
+import com.sun.javaws.exceptions.ExitException;
 import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.CityInfo;
 import entities.Person;
+import errorhandling.MissingFieldsException;
+import errorhandling.PersonNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,9 +34,9 @@ public class PersonFacade {
         return instance;
     }
 
-    public PersonDTO createPerson(PersonDTO p) throws Exception {
+    public PersonDTO createPerson(PersonDTO p) throws MissingFieldsException {
         if (p.getFirstName() == null || p.getLastName() == null) {
-            throw new Exception("Fields are missing!");
+            throw new MissingFieldsException("Fields are missing!");
         }
         EntityManager em = emf.createEntityManager();
         try {
@@ -57,7 +60,7 @@ public class PersonFacade {
     }
 
 
-    public CityInfo searchZips(String zipcode) throws Exception {
+    public CityInfo searchZips(String zipcode) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c where c.zipcode = :zipcode", CityInfo.class);
@@ -74,19 +77,19 @@ public class PersonFacade {
     }
 
 
-    public PersonDTO getSinglePerson(long id) throws Exception {
+    public PersonDTO getSinglePerson(long id) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Person p = em.find(Person.class, id);
         if (p == null) {
-            throw new Exception("Person id NOT found");
+            throw new PersonNotFoundException("Person id NOT found");
         } else {
             return new PersonDTO(p);
         }
     }
 
-    public PersonDTO updatePerson(PersonDTO p) throws Exception {
+    public PersonDTO updatePerson(PersonDTO p) throws MissingFieldsException {
         if (p.getFirstName() == null || p.getLastName() == null) {
-            throw new Exception("One or more fields are missing!");
+            throw new MissingFieldsException("One or more fields are missing!");
         }
         EntityManager em = emf.createEntityManager();
         try {
@@ -102,14 +105,14 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO deletePerson(long id) throws Exception {
+    public PersonDTO deletePerson(long id) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Person person;
         try {
             em.getTransaction().begin();
             person = em.find(Person.class, id);
             if (person == null) {
-                throw new Exception("Could not delete, Person id does not exist!");
+                throw new PersonNotFoundException("Could not delete, Person id does not exist!");
             }
             em.remove(person);
             em.getTransaction().commit();
@@ -130,21 +133,27 @@ public class PersonFacade {
         }
     }
 
-    public List<PersonDTO> getAllPersonsWithHobby(HobbyDTO h) {
+    public List<PersonDTO> getAllPersonsWithHobby(HobbyDTO h) throws MissingFieldsException {
         EntityManager em = emf.createEntityManager();
         try {
+            if (h.getName().equals("")){
+                throw new MissingFieldsException("One or more fields are missing!");
+            }
             TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
             query.setParameter("name", h.getName());
             List<Person> persons = query.getResultList();
             return PersonDTO.getDtos(persons);
-        } finally {
+        }finally {
             em.close();
         }
     }
 
-    public List<PersonDTO> getAllPersonInCity(CityInfoDTO c) {
+    public List<PersonDTO> getAllPersonInCity(CityInfoDTO c) throws MissingFieldsException{
         EntityManager em = emf.createEntityManager();
         try {
+            if (c.getCity().equals("")){
+                throw new MissingFieldsException("One or more fields are missing!");
+            }
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.city = :city", Person.class);
             query.setParameter("city", c.getCity());
             List<Person> personList = query.getResultList();
