@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonResourceTest {
@@ -118,12 +118,13 @@ class PersonResourceTest {
 
     @Test
     void getSinglePerson() {
+        String pid = person.getId().toString();
         given()
                 .contentType("application/json")
                 .get("/person/" + person.getId()).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("id", equalTo(person.getId()));
+                .body("id", equalTo(pid));
     }
 
     @Test
