@@ -96,13 +96,22 @@ class PersonFacadeTest {
 
     @Test
     void readPerson() throws Exception {
-        System.out.println(person.getId());
         PersonDTO pDTO = facade.getSinglePerson(person.getId());
         assertEquals(pDTO.getId(),person.getId());
     }
 
     @Test
-    void updatePerson() {
+    void updatePerson() throws Exception {
+        Address newA = new Address("New Address", "new Address");
+
+        person.setAddress(newA);
+        facade.updatePerson(new PersonDTO(person));
+
+        EntityManager em = emf.createEntityManager();
+        Person actual = em.find(Person.class,person.getId());
+
+        assertEquals(person.getAddress().getStreet(),actual.getAddress().getStreet());
+
     }
 
     @Test
