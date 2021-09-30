@@ -38,6 +38,8 @@ public class Person {
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phone = new ArrayList<>();
+        this.hobbies = new ArrayList<>();
     }
 
     public Person dtoPerson(PersonDTO dto){
@@ -79,6 +81,14 @@ public class Person {
             p.setPerson(this);
             this.phone.add(p);
         }
+    }
+
+    public Person(PersonDTO personDTO) {
+        this.firstName = personDTO.getFirstName();
+        this.lastName = personDTO.getLastName();
+        this.address = new Address(personDTO.getAddress());
+        this.phone = phone;
+        this.hobbies = hobbies;
     }
 
     public List<Hobby> getHobbies() {

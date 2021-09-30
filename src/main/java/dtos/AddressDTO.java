@@ -18,7 +18,7 @@ public class AddressDTO {
         this.id = address.getId();
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
-        //this.persons = PersonDTO.getDtos(address.getPersons());
+        this.persons = PersonDTO.getDtos(address.getPersons());
     }
 
 

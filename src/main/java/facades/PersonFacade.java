@@ -1,8 +1,10 @@
 package facades;
 
 import dtos.AddressDTO;
+import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import org.apache.maven.model.License;
@@ -35,7 +37,7 @@ public class PersonFacade {
         if (p.getFirstName() == null || p.getLastName() == null ) {
             throw new Exception("Fields are missing!");
         }
-        Person person = new Person(p.getFirstName(), p.getLastName());
+        Person person = new Person(p);
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -105,17 +107,19 @@ public class PersonFacade {
         return PersonDTO.getDtos(persons);
     }
 
-    public List<PersonDTO> getAllPersonInCity(PersonDTO p) {
-
-        return null;
+    public List<PersonDTO> getAllPersonInCity(CityInfoDTO c) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Person> query = em.createQuery("SELECT a FROM Address a WHERE a.cityInfo.city = :city", Person.class);
+        query.setParameter("city", c.getCity());
+        List<Person> personList = query.getResultList();
+        return PersonDTO.getDtos(personList);
     }
 
-    public List<PersonDTO> getAllPersonsHobbies(PersonDTO p) {
-        return null;
-    }
-
-    public List<AddressDTO> getAllZipcodes(PersonDTO p) {
-        return null;
+    public List<CityInfoDTO> getAllZipcodes() {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<CityInfo> query = em.createQuery("SELECT c.zipcode FROM CityInfo c", CityInfo.class);
+        List<CityInfo> zipcodes = query.getResultList();
+        return CityInfoDTO.getDtos(zipcodes);
     }
 
 }

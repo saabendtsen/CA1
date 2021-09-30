@@ -21,26 +21,23 @@ public class EntityTester {
         List<Hobby> hobbies = new ArrayList<>();
 
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
-
-        Person person1 = new Person("HEY", "TEST", address1);
-        Person person2 = new Person("HEY2", "TEST2", address1);
-
         phones.add(new Phone(1616, "description"));
         phones.add(new Phone(8888, "description"));
         hobbies.add(new Hobby("svømning", "det vådt"));
         hobbies.add(new Hobby("løb", "nederen"));
-
         CityInfo cityInfo1 = new CityInfo("3730","Nexø");
         cityInfo1.addAddress(address1);
+
+        Person person1 = new Person("HEY", "TEST", address1);
         person1.addHobby(hobbies.get(0));
-        person2.addHobby(hobbies.get(1));
         person1.addPhone(phones.get(0));
         person1.addPhone(phones.get(1));
 
+        Person person2 = new Person("HEY2", "TEST2", address1);
+        person2.addHobby(hobbies.get(1));
 
-        person1.setAddress(address1);
 
-//        PersonDTO pDTO = new PersonDTO(person1);
+        //PersonDTO pDTO = new PersonDTO(person1);
         //System.out.println(gson.toJson(pDTO));
 
         try {
@@ -54,9 +51,12 @@ public class EntityTester {
 
             PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
-
+            // Get all persons in Person DB and print
+            System.out.println(gson.toJson(pf.getAllPersons()));
+            // Get all Persons with a Hobby and print
             System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(1)))));
-
+            // Get all Zipcodes
+            System.out.println(gson.toJson(pf.getAllZipcodes()));
 
         } finally {
             em.close();
