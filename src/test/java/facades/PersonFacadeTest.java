@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
@@ -47,11 +48,11 @@ class PersonFacadeTest {
             person.addHobby(hobby);
             phone = new Phone(75849232, "Jojo");
             person.addPhone(phone);
-            CityInfo cityInfo = new CityInfo("3730", "Nexø");
-            cityInfo.addAddress(address);
+            info = new CityInfo("3730", "Nexø");
+            info.addAddress(address);
 
             em.getTransaction().begin();
-            em.persist(cityInfo);
+            em.persist(info);
             em.persist(person);
             em.getTransaction().commit();
 
@@ -105,7 +106,7 @@ class PersonFacadeTest {
         assertEquals(pDTO.getId(),person.getId());
     }
 
-    @Test
+    //@Test
     void updatePerson() throws Exception {
         Address newA = new Address("New Address", "new Address");
 
@@ -134,13 +135,15 @@ class PersonFacadeTest {
 
     @Test
     void getAllPersonInCity() {
+        CityInfoDTO cityInfoDTO = new CityInfoDTO(info);
+        List<PersonDTO> personDTOS = facade.getAllPersonInCity(cityInfoDTO);
+        assertEquals(person.getFirstName(),personDTOS.get(0).getFirstName());
     }
 
-    @Test
-    void getAllPersonsHobbies() {
-    }
 
     @Test
     void getAllZipcodes() {
+        List<CityInfoDTO> cityInfos = facade.getAllZipcodes();
+        assertEquals(info.getZipcode(),cityInfos.get(0).getZipcode());
     }
 }

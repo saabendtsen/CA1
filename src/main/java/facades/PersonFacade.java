@@ -94,32 +94,48 @@ public class PersonFacade {
 
     public List<PersonDTO> getAllPersons() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
-        List<Person> persons = query.getResultList();
-        return PersonDTO.getDtos(persons);
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+            List<Person> persons = query.getResultList();
+            return PersonDTO.getDtos(persons);
+        }finally {
+            em.close();
+        }
     }
 
     public List<PersonDTO> getAllPersonsWithHobby (HobbyDTO h) {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
-        query.setParameter("name",h.getName());
-        List<Person> persons = query.getResultList();
-        return PersonDTO.getDtos(persons);
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
+            query.setParameter("name", h.getName());
+            List<Person> persons = query.getResultList();
+            return PersonDTO.getDtos(persons);
+        }finally {
+            em.close();
+        }
     }
 
     public List<PersonDTO> getAllPersonInCity(CityInfoDTO c) {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT a FROM Address a WHERE a.cityInfo.city = :city", Person.class);
-        query.setParameter("city", c.getCity());
-        List<Person> personList = query.getResultList();
-        return PersonDTO.getDtos(personList);
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.city = :city", Person.class);
+            query.setParameter("city", c.getCity());
+            List<Person> personList = query.getResultList();
+            return PersonDTO.getDtos(personList);
+        }finally {
+            em.close();
+        }
     }
 
     public List<CityInfoDTO> getAllZipcodes() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
-        List<CityInfo> zipcodes = query.getResultList();
-        return CityInfoDTO.getDtos(zipcodes);
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
+            List<CityInfo> zipcodes = query.getResultList();
+            return CityInfoDTO.getDtos(zipcodes);
+        }finally {
+            em.close();
+        }
     }
 
 }
