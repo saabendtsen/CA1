@@ -1,6 +1,8 @@
 package entities;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -88,8 +90,8 @@ public class Person {
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
         this.address = new Address(personDTO.getAddress());
-        this.phone = phone;
-        this.hobbies = hobbies;
+//        this.phone = new PhoneDTO(personDTO.getPhones());
+//        this.hobbies = new HobbyDTO(personDTO.getHobbies());
     }
 
     public List<Hobby> getHobbies() {

@@ -14,7 +14,6 @@ public class CityInfoDTO {
     private Long id;
     private String zipcode;
     private String city;
-    private List<Address> address;
 
     public CityInfoDTO(Long id, String zipcode, String city) {
         this.id = id;
@@ -58,12 +57,5 @@ public class CityInfoDTO {
         this.city = city;
     }
 
-    public List<Address> getAddress() {
-        return address;
-    }
-
-    public void setAddress(List<Address> address) {
-        this.address = address;
-    }
 }
 

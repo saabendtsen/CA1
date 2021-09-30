@@ -11,14 +11,15 @@ public class AddressDTO {
     private Long id;
     private String street;
     private String additionalInfo;
-    private List<PersonDTO> persons;
+    private CityInfoDTO cityInfoDTO;
 
 
     public AddressDTO(Address address) {
+        System.out.println(address.getCityInfo() + " asdasdasdasda AddressDTO");
         this.id = address.getId();
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
-        this.persons = PersonDTO.getDtos(address.getPersons());
+        this.cityInfoDTO = new CityInfoDTO(address.getCityInfo());
     }
 
 
@@ -46,11 +47,11 @@ public class AddressDTO {
         this.additionalInfo = additionalInfo;
     }
 
-    public List<PersonDTO> getPersons() {
-        return persons;
+    public CityInfoDTO getCityInfoDTO() {
+        return cityInfoDTO;
     }
 
-    public void setPersons(List<PersonDTO> persons) {
-        this.persons = persons;
+    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
+        this.cityInfoDTO = cityInfoDTO;
     }
 }

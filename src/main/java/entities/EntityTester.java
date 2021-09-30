@@ -18,16 +18,17 @@ public class EntityTester {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
-        List<Phone> phones = new ArrayList<>();
 
-        Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
+        List<Phone> phones = new ArrayList<>();
+        CityInfo cityInfo1 = new CityInfo("2730", "hej");
+        Address address1 = new Address("Bøgevej", "Lige nede af vejen lol", cityInfo1);
         phones.add(new Phone(1616, "description"));
         phones.add(new Phone(8888, "description"));
 
         Person person1 = new Person("HEY", "TEST", address1);
         person1.addPhone(phones.get(0));
         person1.addPhone(phones.get(1));
-        person1.addHobby(new Hobby());
+
 
         Person person2 = new Person("HEY2", "TEST2", address1);
 

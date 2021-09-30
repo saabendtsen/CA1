@@ -18,14 +18,8 @@ public class Address {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
     private List<Person> persons;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private CityInfo cityInfo;
-
-    public Address(String street, String additionalInfo, List<Person> persons) {
-        this.street = street;
-        this.additionalInfo = additionalInfo;
-        this.persons = persons;
-    }
 
     public Address() {
     }
@@ -39,15 +33,17 @@ public class Address {
         this.cityInfo = cityInfo;
     }
 
-    public Address(String street, String additionalInfo) {
+    public Address(String street, String additionalInfo, CityInfo cityInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
         this.persons = new ArrayList<>();
+        this.cityInfo = cityInfo;
     }
 
     public Address(AddressDTO address) {
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
+
     }
 
 
@@ -85,5 +81,6 @@ public class Address {
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
+
 
 }
