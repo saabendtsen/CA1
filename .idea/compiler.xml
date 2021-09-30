@@ -13,7 +13,6 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="CA1" options="-endorseddirs C:\Users\youne\Desktop\CA1\target/endorsed" />
       <module name="CA1" options="-endorseddirs C:\Users\Quiet\Documents\3SemMixed\CA1\target/endorsed" />
       <module name="devops-starter" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
     </option>
