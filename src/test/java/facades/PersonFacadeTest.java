@@ -78,7 +78,7 @@ class PersonFacadeTest {
 
     @Test
     void createPerson() throws Exception {
-        CityInfo cityInfo = new CityInfo("3212","Younes");
+        CityInfo cityInfo = new CityInfo("0001","Younes");
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol", cityInfo);
         Person person1 = new Person("Jens", "hansen");
 
