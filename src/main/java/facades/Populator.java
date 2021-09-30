@@ -5,9 +5,11 @@
  */
 package facades;
 
+import dtos.PersonDTO;
 import dtos.RenameMeDTO;
 import entities.*;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
 
@@ -19,26 +21,28 @@ import java.util.List;
  * @author tha
  */
 public class Populator {
-    public static void populate(){
+    public static void populate() throws Exception {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
-        FacadeExample fe = FacadeExample.getFacadeExample(emf);
+        PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
-        List<Person> personList = new ArrayList<>();
+        Person person;
+        Address address;
+        Phone phone;
+        Hobby hobby;
+        CityInfo info;
 
-//        //Person person = new Person("August", "niller");
-//        personList.add(person);
-//        Hobby h1 = new Hobby("Svømning","det er i vand");
-//        //person.addHobby(h1);
-//        Phone p1 = new Phone(1235,"Nokia",person);
-//        //person.addPhone(p1);
-//        Address a1 = new Address("Bøgevej","Det er på hjørnet",personList);
-//        person.setAddress(a1);
-//
-//        emf.createEntityManager().persist(person);
+        info = new CityInfo("3730", "Nexø");
+        address = new Address("hej", "s", info);
+        person = new Person("hej", "hasd", address);
+        hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
+        person.addHobby(hobby);
+        phone = new Phone(75849232, "Jojo");
+        person.addPhone(phone);
 
+       pf.createPerson(new PersonDTO(person));
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         populate();
     }
 }

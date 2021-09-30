@@ -2,15 +2,15 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
-import entities.Person;
+import entities.*;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
 
 @Path("/person")
@@ -20,14 +20,13 @@ public class PersonResource {
     private final PersonFacade pf = PersonFacade.getPersonFacade(EMF);
 
     @GET
-    @Path("all")
     @Produces("application/json")
-    public String getAllPersons(){
+    public String getAllPersons() {
         List<PersonDTO> personDTOList = pf.getAllPersons();
-
         return GSON.toJson(personDTOList);
     }
 
+/*
     @POST
     @Produces("application/json")
     @Consumes("application/json")
@@ -52,21 +51,21 @@ public class PersonResource {
     public String updatePerson(String person) throws Exception {
         PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
         personDTO = pf.updatePerson(personDTO);
-
         return GSON.toJson(personDTO);
     }
 
-    @DELETE
+
     @Path("{id}")
+    @DELETE
     @Produces("application/json")
     public String deletePerson(@PathParam("id")long id) throws Exception {
         PersonDTO personDTO = pf.deletePerson(id);
 
         return GSON.toJson(personDTO);
     }
-
-    @GET
+/*
     @Path("{hobby}")
+    @GET
     @Produces("application/json")
     public String getAllPersonsWithHobby(@PathParam("hobby")String hobby){
         HobbyDTO hobbyDTO = GSON.fromJson(hobby,HobbyDTO.class);
@@ -75,15 +74,20 @@ public class PersonResource {
         return GSON.toJson(personDTOS);
     }
 
+
+    @Path("{city}")
     @GET
     @Produces("application/json")
     public String getAllPersonInCity(String person){
         return null;
     }
 
+    @Path("{zipcode}")
     @GET
     @Produces("application/json")
     public Response getAllZipcodes(){
         return null;
     }
+
+ */
 }
