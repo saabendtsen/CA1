@@ -9,6 +9,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/person")
@@ -19,20 +20,20 @@ public class PersonResource {
 
     @GET
     @Produces("application/json")
-    public String getAllPersons() {
+    public Response getAllPersons() {
         List<PersonDTO> personDTOList = pf.getAllPersons();
-        return GSON.toJson(personDTOList);
+        return Response.ok(GSON.toJson(personDTOList)).build();
     }
 
-/*
+
     @POST
     @Produces("application/json")
     @Consumes("application/json")
     public String createPerson(String person) throws Exception {
-        PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
+        PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
         personDTO = pf.createPerson(personDTO);
         return GSON.toJson(personDTO);
-   */
+    }
 
     @GET
     @Path("{id}")

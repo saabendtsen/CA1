@@ -45,7 +45,7 @@ public class Person {
         this.hobbies = new ArrayList<>();
     }
 
-    public Person dtoPerson(PersonDTO dto){
+    public Person dtoPerson(PersonDTO dto) {
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         return this;
@@ -90,8 +90,8 @@ public class Person {
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
         this.address = new Address(personDTO.getAddress());
-//        this.phone = new PhoneDTO(personDTO.getPhones());
-//        this.hobbies = new HobbyDTO(personDTO.getHobbies());
+        this.phone = new Phone().toDtos(personDTO.getPhones());
+        this.hobbies = new Hobby().toDtos(personDTO.getHobbies());
     }
 
     public List<Hobby> getHobbies() {
