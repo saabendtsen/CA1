@@ -117,7 +117,7 @@ public class PersonFacade {
 
     public List<CityInfoDTO> getAllZipcodes() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<CityInfo> query = em.createQuery("SELECT c.zipcode FROM CityInfo c", CityInfo.class);
+        TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
         List<CityInfo> zipcodes = query.getResultList();
         return CityInfoDTO.getDtos(zipcodes);
     }
