@@ -8,9 +8,7 @@ import facades.PersonFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Path("/person")
@@ -53,16 +51,16 @@ public class PersonResource {
         personDTO = pf.updatePerson(personDTO);
         return GSON.toJson(personDTO);
     }
-
+*/
 
     @Path("{id}")
     @DELETE
     @Produces("application/json")
     public String deletePerson(@PathParam("id")long id) throws Exception {
         PersonDTO personDTO = pf.deletePerson(id);
-
         return GSON.toJson(personDTO);
     }
+    /*
 /*
     @Path("{hobby}")
     @GET
