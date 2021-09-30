@@ -19,7 +19,23 @@ public class EntityTester {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
 
+        try {
+            CityInfo info = new CityInfo("3730", "Nexø");
+            Address address = new Address("hej", "s", info);
+            Person person = new Person("hej", "hasd", address);
+            Hobby hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
+            person.addHobby(hobby);
+            Phone phone = new Phone(75849232, "Jojo");
+            person.addPhone(phone);
 
+
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
 
 
     }
