@@ -1,10 +1,10 @@
 package facades;
 
-import com.sun.javaws.exceptions.ExitException;
 import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
@@ -45,6 +45,22 @@ public class PersonFacade {
                 CityInfoDTO c = new CityInfoDTO(ci);
                 p.getAddress().setCityInfoDTO(c);
             }
+
+            System.out.println(p.getPhones().get(0).getPerson().getId());
+
+            for (int i = 0; i < p.getHobbies().size(); i++) {
+                Hobby h = searchHobbys(p.getHobbies().get(i).getName());
+                if (h != null) {
+                    HobbyDTO dto = new HobbyDTO(h);
+                    p.getHobbies().get(i).setName(dto.getName());
+                }
+
+            }
+
+
+
+
+
         } catch (NoResultException e) {
             e.printStackTrace();
         }
@@ -59,6 +75,22 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
+
+    public Hobby searchHobbys(String hobby) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h where h.name = :hobby", Hobby.class);
+            query.setParameter("hobby", hobby);
+            List<Hobby> h = query.getResultList();
+            if (h.size() > 0) {
+                return h.get(0);
+            } else {
+                return null;
+            }
+        } finally {
+            em.close();
+        }
+    }
 
     public CityInfo searchZips(String zipcode) {
         EntityManager em = emf.createEntityManager();
