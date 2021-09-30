@@ -87,6 +87,9 @@ public class Person {
     }
 
     public Person(PersonDTO personDTO) {
+        if(personDTO.getId() != null){
+            this.id = personDTO.getId();
+        }
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
         this.address = new Address(personDTO.getAddress());

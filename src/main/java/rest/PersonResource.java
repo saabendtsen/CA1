@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.xml.internal.bind.v2.TODO;
 import dtos.PersonDTO;
 import entities.*;
 import facades.PersonFacade;
@@ -43,7 +44,7 @@ public class PersonResource {
         return GSON.toJson(personDTO);
     }
 
-/*
+    // TODO: 30-09-2021 Need testing
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
@@ -52,7 +53,7 @@ public class PersonResource {
         personDTO = pf.updatePerson(personDTO);
         return GSON.toJson(personDTO);
     }
-*/
+
 
     @Path("{id}")
     @DELETE
@@ -61,8 +62,10 @@ public class PersonResource {
         PersonDTO personDTO = pf.deletePerson(id);
         return GSON.toJson(personDTO);
     }
-    /*
+
+
 /*
+    // TODO: 30-09-2021 Need testing
     @Path("{hobby}")
     @GET
     @Produces("application/json")
