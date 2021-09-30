@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
-import entities.Person;
 import facades.PersonFacade;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -16,74 +14,91 @@ import java.util.List;
 @Path("/person")
 public class PersonResource {
     private final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final PersonFacade pf = PersonFacade.getPersonFacade(EMF);
 
-    @GET
-    @Path("all")
-    @Produces("application/json")
-    public String getAllPersons(){
-        List<PersonDTO> personDTOList = pf.getAllPersons();
 
-        return GSON.toJson(personDTOList);
+    @GET
+    @Produces("application/json")
+    public Response getAllPersons() {
+        return Response.ok(gson.toJson(pf.getAllPersons()), "application/json").build();
     }
 
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    public String createPerson(String person) throws Exception {
-        PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
-        personDTO = pf.createPerson(personDTO);
-        return GSON.toJson(personDTO);
+    public Response addPerson(String person) throws Exception {
+        PersonDTO dto = gson.fromJson(person, PersonDTO.class);
+        dto = pf.createPerson(dto);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
-    @GET
     @Path("{id}")
-    @Produces("application/json")
-    public String getSinglePerson(@PathParam("id")long id) throws Exception {
-        PersonDTO personDTO = pf.getSinglePerson(id);
-
-        return GSON.toJson(personDTO);
-    }
-
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public String updatePerson(String person) throws Exception {
-        PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
-        personDTO = pf.updatePerson(personDTO);
-
-        return GSON.toJson(personDTO);
+    public Response editPerson(@PathParam("id") long id, String person) throws Exception {
+        PersonDTO dto = gson.fromJson(person, PersonDTO.class);
+        dto.setId(id);
+        dto = pf.updatePerson(dto);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
-    @DELETE
     @Path("{id}")
+    @DELETE
     @Produces("application/json")
-    public String deletePerson(@PathParam("id")long id) throws Exception {
-        PersonDTO personDTO = pf.deletePerson(id);
-
-        return GSON.toJson(personDTO);
+    @Consumes("application/json")
+    public Response deletePerson(@PathParam("id") long id) throws Exception {
+        PersonDTO dto = pf.deletePerson(id);
+        return Response.ok("{\"status\" : \"removed: " + gson.toJson(dto) + "\"}", "application/json").build();
     }
 
+    @Path("{id}")
     @GET
-    @Path("{hobby}")
     @Produces("application/json")
-    public String getAllPersonsWithHobby(@PathParam("hobby")String hobby){
-        HobbyDTO hobbyDTO = GSON.fromJson(hobby,HobbyDTO.class);
+    public Response getPersonById(@PathParam("id") long id) throws Exception {
+        PersonDTO dto = pf.getSinglePerson(id);
+        return Response.ok(gson.toJson(dto), "application/json").build();
+    }
+
+    @Path("hobby/{hobby}")
+    @GET
+    @Produces("application/json")
+    public Response getAllPersonsWithHobby(@PathParam("hobby") String hobby) throws Exception {
+        HobbyDTO hobbyDTO = gson.fromJson(hobby, HobbyDTO.class);
+        List<PersonDTO> dto = pf.getAllPersonsWithHobby(hobbyDTO);
+        return Response.ok(gson.toJson(dto), "application/json").build();
+    }
+
+    @Path("zipcodes")
+    @GET
+    @Produces("application/json")
+    public Response getAllZipcodes() {
+        return Response.ok(gson.toJson(pf.getAllZipcodes()), "application/json").build();
+    }
+
+    /*
+
+
+    @Path("{hobby}")
+    @GET
+    @Produces("application/json")
+    public String getAllPersonsWithHobby(@PathParam("hobby") String hobby) {
+        HobbyDTO hobbyDTO = GSON.fromJson(hobby, HobbyDTO.class);
         List<PersonDTO> personDTOS = pf.getAllPersonsWithHobby(hobbyDTO);
 
         return GSON.toJson(personDTOS);
     }
 
+
+    @Path("{city}")
     @GET
     @Produces("application/json")
-    public String getAllPersonInCity(String person){
+    public String getAllPersonInCity(String person) {
         return null;
     }
 
-    @GET
-    @Produces("application/json")
-    public Response getAllZipcodes(){
-        return null;
-    }
+
+
+*/
 }

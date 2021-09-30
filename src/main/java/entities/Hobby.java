@@ -1,5 +1,8 @@
 package entities;
 
+import dtos.HobbyDTO;
+import dtos.PhoneDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,12 @@ public class Hobby {
         this.name = name;
         this.description = description;
         this.persons = new ArrayList<>();
+    }
+
+    public Hobby(HobbyDTO hDTO) {
+        this.id = hDTO.getId();
+        this.name = hDTO.getName();
+        this.description = hDTO.getDescription();
     }
 
     public List<Person> addPersons(Person person) {
@@ -66,5 +75,14 @@ public class Hobby {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Hobby> toDtos(List<HobbyDTO> hobbies) {
+        List<Hobby> hobbyList = new ArrayList();
+        for (HobbyDTO pDTO: hobbies) {
+            hobbyList.add(new Hobby(pDTO));
+        }
+        return hobbyList;
+
     }
 }
