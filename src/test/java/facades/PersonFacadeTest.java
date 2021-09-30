@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
 import org.junit.jupiter.api.*;
@@ -8,14 +9,19 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PersonFacadeTest {
+    private Person person;
+    private Address address;
+    private Phone phone;
+    private Hobby hobby;
+    private CityInfo info;
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-
-    private Person person;
 
     public PersonFacadeTest(){
     }
@@ -35,14 +41,14 @@ class PersonFacadeTest {
     void setUp() {
         EntityManager em = emf.createEntityManager();
         try{
-            Address a1 = new Address("hej", "s");
-            person = new Person("hej", "hasd", a1);
-            Hobby hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
+            address = new Address("hej", "s");
+            person = new Person("hej", "hasd", address);
+            hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
             person.addHobby(hobby);
-            Phone phone = new Phone(75849232, "Jojo");
+            phone = new Phone(75849232, "Jojo");
             person.addPhone(phone);
             CityInfo cityInfo = new CityInfo("3730", "Nexø");
-            cityInfo.addAddress(a1);
+            cityInfo.addAddress(address);
 
             em.getTransaction().begin();
             em.persist(cityInfo);
@@ -64,7 +70,6 @@ class PersonFacadeTest {
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.resetAutoI").executeUpdate();
             em.getTransaction().commit();
         }finally {
             em.close();
@@ -122,6 +127,9 @@ class PersonFacadeTest {
 
     @Test
     void getAllPersonsWithHobby() {
+        HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+        List<PersonDTO> personDTOS = facade.getAllPersonsWithHobby(hobbyDTO);
+        assertEquals(person.getFirstName(),personDTOS.get(0).getFirstName());
     }
 
     @Test

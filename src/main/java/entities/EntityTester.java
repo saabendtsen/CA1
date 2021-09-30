@@ -2,6 +2,7 @@ package entities;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import facades.PersonFacade;
@@ -18,23 +19,17 @@ public class EntityTester {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         List<Phone> phones = new ArrayList<>();
-        List<Hobby> hobbies = new ArrayList<>();
 
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol");
         phones.add(new Phone(1616, "description"));
         phones.add(new Phone(8888, "description"));
-        hobbies.add(new Hobby("svømning", "det vådt"));
-        hobbies.add(new Hobby("løb", "nederen"));
-        CityInfo cityInfo1 = new CityInfo("3730","Nexø");
-        cityInfo1.addAddress(address1);
 
         Person person1 = new Person("HEY", "TEST", address1);
-        person1.addHobby(hobbies.get(0));
         person1.addPhone(phones.get(0));
         person1.addPhone(phones.get(1));
+        person1.addHobby(new Hobby());
 
         Person person2 = new Person("HEY2", "TEST2", address1);
-        person2.addHobby(hobbies.get(1));
 
 
         //PersonDTO pDTO = new PersonDTO(person1);
@@ -44,7 +39,6 @@ public class EntityTester {
             em.getTransaction().begin();
             em.persist(person1);
             em.persist(person2);
-            em.persist(cityInfo1);
             em.getTransaction().commit();
             //Verify database id
 
@@ -54,9 +48,14 @@ public class EntityTester {
             // Get all persons in Person DB and print
             System.out.println(gson.toJson(pf.getAllPersons()));
             // Get all Persons with a Hobby and print
-            System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(1)))));
+            //System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0)))));
             // Get all Zipcodes
-            System.out.println(gson.toJson(pf.getAllZipcodes()));
+            for (CityInfoDTO c : pf.getAllZipcodes()) {
+                if (c.getZipcode().equals("3000")) {
+                    System.out.println("City: " + c.getCity());
+                    System.out.println("Zipcode: " + c.getZipcode());
+                }
+            }
 
         } finally {
             em.close();
