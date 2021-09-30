@@ -7,11 +7,10 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -55,6 +54,42 @@ class PersonResourceTest {
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
     }
+    @BeforeEach
+    void setUp() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            info = new CityInfo("3730", "Nexø");
+            address = new Address("hej", "s", info);
+            person = new Person("hej", "hasd", address);
+            hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
+            person.addHobby(hobby);
+            phone = new Phone(75849232, "Jojo");
+            person.addPhone(phone);
+
+
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+    }
+    @AfterEach
+    void tearDown() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
 
     @AfterAll
     public static void closeTestServer() {
@@ -85,7 +120,7 @@ class PersonResourceTest {
     void getSinglePerson() {
         given()
                 .contentType("application/json")
-                .get("/person/id/" + person.getId()).then()
+                .get("/person/" + person.getId()).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("id", equalTo(person.getId()));
