@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.CityInfoDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +24,11 @@ public class CityInfo implements Serializable {
     private List<Address> addresslist;
 
     public CityInfo() {
+    }
+
+    public CityInfo(CityInfoDTO cityInfoDTO) {
+        this.zipcode = cityInfoDTO.getZipcode();
+        this.city = cityInfoDTO.getCity();
     }
 
     public CityInfo(String zipcode, String city) {

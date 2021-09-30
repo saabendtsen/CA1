@@ -15,7 +15,6 @@ public class AddressDTO {
 
 
     public AddressDTO(Address address) {
-        System.out.println(address.getCityInfo() + " asdasdasdasda AddressDTO");
         this.id = address.getId();
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();

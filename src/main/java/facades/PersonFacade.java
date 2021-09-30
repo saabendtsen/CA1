@@ -66,10 +66,12 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            Person tempPerson = em.find(Person.class, p.getId());
-            tempPerson = tempPerson.dtoPerson(p);
+//            Person tempPerson = em.find(Person.class, p.getId());
+//            tempPerson = tempPerson.dtoPerson(p);
+            Person person = new Person(p);
+            em.merge(person);
             em.getTransaction().commit();
-            return new PersonDTO(tempPerson);
+            return new PersonDTO(person);
         } finally {
             em.close();
         }
