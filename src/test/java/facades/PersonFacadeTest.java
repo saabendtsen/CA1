@@ -15,6 +15,8 @@ class PersonFacadeTest {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
 
+    private Person person;
+
     public PersonFacadeTest(){
     }
 
@@ -34,7 +36,7 @@ class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try{
             Address a1 = new Address("hej", "s");
-            Person person = new Person("hej", "hasd", a1);
+            person = new Person("hej", "hasd", a1);
             Hobby hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
             person.addHobby(hobby);
             Phone phone = new Phone(75849232, "Jojo");
@@ -51,6 +53,7 @@ class PersonFacadeTest {
             em.persist(cityInfo);
             em.persist(person);
             em.getTransaction().commit();
+
         }finally {
             em.close();
         }
@@ -85,8 +88,9 @@ class PersonFacadeTest {
 
     @Test
     void readPerson() throws Exception {
-        PersonDTO pDTO = facade.getSinglePerson(1);
-        assertEquals(pDTO.getId(),1);
+        System.out.println(person.getId());
+        PersonDTO pDTO = facade.getSinglePerson(person.getId());
+        assertEquals(pDTO.getId(),person.getId());
     }
 
     @Test
@@ -95,8 +99,8 @@ class PersonFacadeTest {
 
     @Test
     void deletePerson() throws Exception {
-        PersonDTO personDTO = facade.deletePerson(1);
-        assertEquals(personDTO.getId(),1);
+        PersonDTO personDTO = facade.deletePerson(person.getId());
+        assertEquals(personDTO.getId(),person.getId());
     }
 
     @Test
