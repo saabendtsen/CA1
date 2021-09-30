@@ -44,19 +44,19 @@ public class EntityTester {
             //Verify database id
 
 
-            PersonFacade pf = PersonFacade.getPersonFacade(emf);
-
-            // Get all persons in Person DB and print
-            System.out.println(gson.toJson(pf.getAllPersons()));
-            // Get all Persons with a Hobby and print
-            //System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0)))));
-            // Get all Zipcodes
-            for (CityInfoDTO c : pf.getAllZipcodes()) {
-                if (c.getZipcode().equals("3000")) {
-                    System.out.println("City: " + c.getCity());
-                    System.out.println("Zipcode: " + c.getZipcode());
-                }
-            }
+//            PersonFacade pf = PersonFacade.getPersonFacade(emf);
+//
+//            // Get all persons in Person DB and print
+//            System.out.println(gson.toJson(pf.getAllPersons()));
+//            // Get all Persons with a Hobby and print
+//            //System.out.println(gson.toJson(pf.getAllPersonsWithHobby(new HobbyDTO(hobbies.get(0)))));
+//            // Get all Zipcodes
+//            for (CityInfoDTO c : pf.getAllZipcodes()) {
+//                if (c.getZipcode().equals("3000")) {
+//                    System.out.println("City: " + c.getCity());
+//                    System.out.println("Zipcode: " + c.getZipcode());
+//                }
+//            }
 
         } finally {
             em.close();
