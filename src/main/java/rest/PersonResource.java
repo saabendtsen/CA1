@@ -2,14 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
