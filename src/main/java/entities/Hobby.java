@@ -16,6 +16,14 @@ public class Hobby {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Person> persons;
 
+    public Hobby() {
+    }
+
+    public Hobby(String name, String description, List<Person> persons) {
+        this.name = name;
+        this.description = description;
+        this.persons = persons;
+    }
 
     public Hobby(String name, String description) {
         this.name = name;
@@ -50,15 +58,6 @@ public class Hobby {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Hobby() {
-    }
-
-    public Hobby(String name, String description, List<Person> persons) {
-        this.name = name;
-        this.description = description;
-        this.persons = persons;
     }
 
     public Long getId() {
