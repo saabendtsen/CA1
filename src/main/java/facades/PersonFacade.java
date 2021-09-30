@@ -1,16 +1,14 @@
 package facades;
 
-import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.CityInfo;
-import entities.Hobby;
 import entities.Person;
-import org.apache.maven.model.License;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -34,11 +32,20 @@ public class PersonFacade {
     }
 
     public PersonDTO createPerson(PersonDTO p) throws Exception {
-        if (p.getFirstName() == null || p.getLastName() == null ) {
+        if (p.getFirstName() == null || p.getLastName() == null) {
             throw new Exception("Fields are missing!");
         }
-        Person person = new Person(p);
         EntityManager em = emf.createEntityManager();
+        try {
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode());
+            if (ci != null) {
+                CityInfoDTO c = new CityInfoDTO(ci);
+                p.getAddress().setCityInfoDTO(c);
+            }
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+        Person person = new Person(p);
         try {
             em.getTransaction().begin();
             em.persist(person);
@@ -48,6 +55,24 @@ public class PersonFacade {
         }
         return new PersonDTO(person);
     }
+
+
+    public CityInfo searchZips(String zipcode) throws Exception {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c where c.zipcode = :zipcode", CityInfo.class);
+            query.setParameter("zipcode", zipcode);
+            List<CityInfo> c = query.getResultList();
+            if (c.size() > 0) {
+                return c.get(0);
+            } else {
+                return null;
+            }
+        } finally {
+            em.close();
+        }
+    }
+
 
     public PersonDTO getSinglePerson(long id) throws Exception {
         EntityManager em = emf.createEntityManager();
@@ -66,8 +91,8 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-//            Person tempPerson = em.find(Person.class, p.getId());
-//            tempPerson = tempPerson.dtoPerson(p);
+            //Person tempPerson = em.find(Person.class, p.getId());
+            //tempPerson = tempPerson.dtoPerson(p);
             Person person = new Person(p);
             em.merge(person);
             em.getTransaction().commit();
@@ -100,19 +125,19 @@ public class PersonFacade {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
             List<Person> persons = query.getResultList();
             return PersonDTO.getDtos(persons);
-        }finally {
+        } finally {
             em.close();
         }
     }
 
-    public List<PersonDTO> getAllPersonsWithHobby (HobbyDTO h) {
+    public List<PersonDTO> getAllPersonsWithHobby(HobbyDTO h) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
             query.setParameter("name", h.getName());
             List<Person> persons = query.getResultList();
             return PersonDTO.getDtos(persons);
-        }finally {
+        } finally {
             em.close();
         }
     }
@@ -124,7 +149,7 @@ public class PersonFacade {
             query.setParameter("city", c.getCity());
             List<Person> personList = query.getResultList();
             return PersonDTO.getDtos(personList);
-        }finally {
+        } finally {
             em.close();
         }
     }
@@ -135,7 +160,7 @@ public class PersonFacade {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
             List<CityInfo> zipcodes = query.getResultList();
             return CityInfoDTO.getDtos(zipcodes);
-        }finally {
+        } finally {
             em.close();
         }
     }
