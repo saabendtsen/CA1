@@ -32,17 +32,17 @@ public class PersonResource {
         PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
         personDTO = pf.createPerson(personDTO);
         return GSON.toJson(personDTO);
-    }
+   */
 
     @GET
     @Path("{id}")
     @Produces("application/json")
     public String getSinglePerson(@PathParam("id")long id) throws Exception {
         PersonDTO personDTO = pf.getSinglePerson(id);
-
         return GSON.toJson(personDTO);
     }
 
+/*
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
