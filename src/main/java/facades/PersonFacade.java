@@ -44,22 +44,18 @@ public class PersonFacade {
             if (ci != null) {
                 CityInfoDTO c = new CityInfoDTO(ci);
                 p.getAddress().setCityInfoDTO(c);
+                p.getAddress().setId(c.getId()); //Lortet virker ikke
             }
 
-            System.out.println(p.getPhones().get(0).getPerson().getId());
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName());
                 if (h != null) {
                     HobbyDTO dto = new HobbyDTO(h);
-                    p.getHobbies().get(i).setName(dto.getName());
+                    p.getHobbies().set(i,dto);
+                    p.getHobbies().set(i,dto).setId(dto.getId()); //Lortet virker ikke
                 }
-
             }
-
-
-
-
 
         } catch (NoResultException e) {
             e.printStackTrace();
@@ -79,8 +75,8 @@ public class PersonFacade {
     public Hobby searchHobbys(String hobby) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h where h.name = :hobby", Hobby.class);
-            query.setParameter("hobby", hobby);
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h where h.name = :name", Hobby.class);
+            query.setParameter("name", hobby);
             List<Hobby> h = query.getResultList();
             if (h.size() > 0) {
                 return h.get(0);
