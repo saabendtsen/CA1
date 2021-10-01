@@ -23,6 +23,7 @@ import java.util.List;
 public class Populator {
     public static void populate() throws Exception {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
+        EntityManager em = emf.createEntityManager();
         PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
         Person person;
@@ -39,9 +40,13 @@ public class Populator {
         phone = new Phone(75849232, "Jojo");
         person.addPhone(phone);
 
-        EntityManager em = emf.createEntityManager();
-
         em.persist(person);
+        em.getTransaction().begin();
+        em.persist(person);
+        em.getTransaction().commit();
+       //pf.createPerson(new PersonDTO(person));
+
+
     }
     
     public static void main(String[] args) throws Exception {

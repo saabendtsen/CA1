@@ -2,92 +2,87 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.CityInfoDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
-import entities.*;
+import errorhandling.MissingFieldsException;
+import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/person")
 public class PersonResource {
     private final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final PersonFacade pf = PersonFacade.getPersonFacade(EMF);
 
     @GET
     @Produces("application/json")
-    public String getAllPersons() {
-        List<PersonDTO> personDTOList = pf.getAllPersons();
-        return GSON.toJson(personDTOList);
-    }
-
-/*
-    @POST
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String createPerson(String person) throws Exception {
-        PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
-        personDTO = pf.createPerson(personDTO);
-        return GSON.toJson(personDTO);
+    public Response getAllPersons() {
+        return Response.ok(gson.toJson(pf.getAllPersons()), "application/json").build();
     }
 
     @GET
-    @Path("{id}")
+    @Path("zipcodes")
     @Produces("application/json")
-    public String getSinglePerson(@PathParam("id")long id) throws Exception {
-        PersonDTO personDTO = pf.getSinglePerson(id);
+    public Response getAllZipcodes() {
+        return Response.ok(gson.toJson(pf.getAllZipcodes()), "application/json").build();
+    }
 
-        return GSON.toJson(personDTO);
+    @POST
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response addPerson(String person) throws MissingFieldsException {
+        PersonDTO dto = gson.fromJson(person, PersonDTO.class);
+        dto = pf.createPerson(dto);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public String updatePerson(String person) throws Exception {
-        PersonDTO personDTO = GSON.fromJson(person,PersonDTO.class);
-        personDTO = pf.updatePerson(personDTO);
-        return GSON.toJson(personDTO);
+    public Response editPerson(String person) throws MissingFieldsException {
+        PersonDTO dto = gson.fromJson(person, PersonDTO.class);
+        dto = pf.updatePerson(dto);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
-
-    @Path("{id}")
     @DELETE
+    @Path("{id}")
     @Produces("application/json")
-    public String deletePerson(@PathParam("id")long id) throws Exception {
-        PersonDTO personDTO = pf.deletePerson(id);
-
-        return GSON.toJson(personDTO);
+    @Consumes("application/json")
+    public Response deletePerson(@PathParam("id") long id) throws PersonNotFoundException {
+        PersonDTO dto = pf.deletePerson(id);
+        return Response.ok("{\"status\" : \"removed: " + gson.toJson(dto) + "\"}", "application/json").build();
     }
-/*
-    @Path("{hobby}")
+
     @GET
+    @Path("{id}")
     @Produces("application/json")
-    public String getAllPersonsWithHobby(@PathParam("hobby")String hobby){
-        HobbyDTO hobbyDTO = GSON.fromJson(hobby,HobbyDTO.class);
-        List<PersonDTO> personDTOS = pf.getAllPersonsWithHobby(hobbyDTO);
-
-        return GSON.toJson(personDTOS);
+    public Response getPersonById(@PathParam("id") long id) throws PersonNotFoundException {
+        PersonDTO dto = pf.getSinglePerson(id);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
-
-    @Path("{city}")
     @GET
+    @Path("hobby/{hobby}")
     @Produces("application/json")
-    public String getAllPersonInCity(String person){
-        return null;
+    public Response getAllPersonsWithHobby(@PathParam("hobby") String hobby) throws MissingFieldsException {
+        HobbyDTO hobbyDTO = gson.fromJson(hobby, HobbyDTO.class);
+        List<PersonDTO> dto = pf.getAllPersonsWithHobby(hobbyDTO);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
-    @Path("{zipcode}")
     @GET
+    @Path("city/{city}")
     @Produces("application/json")
-    public Response getAllZipcodes(){
-        return null;
+    public Response getAllPersonInCity(@PathParam("city") String city) throws MissingFieldsException {
+        CityInfoDTO cityInfoDTO = gson.fromJson(city, CityInfoDTO.class);
+        List<PersonDTO> dto = pf.getAllPersonInCity(cityInfoDTO);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
-
- */
 }
