@@ -24,6 +24,7 @@ public class Person {
     private List<Phone> phone;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "persons")
+    @JoinTable(name = "HOBBY")
     private List<Hobby> hobbies;
 
     public Person() {
@@ -111,11 +112,14 @@ public class Person {
         }
     }
 
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
+    }
+
     public void addHobby(Hobby hobby) {
         if (hobby != null) {
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
-
         }
     }
 }
