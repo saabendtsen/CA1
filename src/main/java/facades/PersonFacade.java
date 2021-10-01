@@ -41,8 +41,6 @@ public class PersonFacade {
         }
         EntityManager em = emf.createEntityManager();
         Person person = new Person(p);
-        List<Hobby> newHobbies = new ArrayList<>();
-
         //Test if city exist
         try {
             CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
@@ -55,10 +53,8 @@ public class PersonFacade {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
 
                 if (h != null) {
-                    //newHobbies.add((h));
                     person.addHobby(h);
                 } else {
-                    //newHobbies.add(new Hobby(p.getHobbies().get(i)));
                     person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
