@@ -40,8 +40,6 @@ public class PersonFacade {
             throw new MissingFieldsException("Fields are missing!");
         }
         EntityManager em = emf.createEntityManager();
-
-
         Person person = new Person(p);
         List<Hobby> newHobbies = new ArrayList<>();
 
@@ -51,8 +49,6 @@ public class PersonFacade {
             if (ci != null) {
                 person.getAddress().setCityInfo(ci);
             }
-
-
             person.setHobbies(new ArrayList<>());
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
@@ -84,7 +80,6 @@ public class PersonFacade {
             em.persist(person);
             em.getTransaction().commit();
             System.out.println(person.getHobbies().get(0).getId() + "just after persist");
-
         } finally {
             em.close();
         }
