@@ -39,7 +39,9 @@ public class Populator {
         phone = new Phone(75849232, "Jojo");
         person.addPhone(phone);
 
-       pf.createPerson(new PersonDTO(person));
+        EntityManager em = emf.createEntityManager();
+
+        em.persist(person);
     }
     
     public static void main(String[] args) throws Exception {
