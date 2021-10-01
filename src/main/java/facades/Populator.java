@@ -40,6 +40,7 @@ public class Populator {
         phone = new Phone(75849232, "Jojo");
         person.addPhone(phone);
 
+        em.persist(person);
         em.getTransaction().begin();
         em.persist(person);
         em.getTransaction().commit();
