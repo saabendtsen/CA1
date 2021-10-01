@@ -117,9 +117,9 @@ public class Person {
     }
 
     public void addHobby(Hobby hobby) {
+        this.hobbies.add(hobby);
         if (hobby != null) {
-            this.hobbies.add(hobby);
-            hobby.getPersons().add(this);
+            hobby.addPersons(this);
         }
     }
 }

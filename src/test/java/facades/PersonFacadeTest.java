@@ -40,9 +40,7 @@ class PersonFacadeTest {
     }
 
     @BeforeEach
-    void setUp() {
-        EntityManager em = emf.createEntityManager();
-        try {
+    void setUp() throws MissingFieldsException {
             info = new CityInfo("3730", "Nexø");
             address = new Address("hej", "s", info);
             person = new Person("hej", "hasd", address);
@@ -52,13 +50,8 @@ class PersonFacadeTest {
             person.addPhone(phone);
 
 
-            em.getTransaction().begin();
-            em.persist(person);
-            em.getTransaction().commit();
+            person = new Person(facade.createPerson(new PersonDTO(person)));
 
-        } finally {
-            em.close();
-        }
     }
 
     @AfterEach
@@ -66,9 +59,9 @@ class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-//            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
 //            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
 //            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
@@ -138,6 +131,6 @@ class PersonFacadeTest {
     @Test
     void getAllZipcodes() {
         List<CityInfoDTO> cityInfos = facade.getAllZipcodes();
-        assertEquals(info.getZipcode(), cityInfos.get(0).getZipcode());
+        assertEquals(cityInfos.size(), 1353);
     }
 }

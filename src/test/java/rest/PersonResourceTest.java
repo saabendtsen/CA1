@@ -80,6 +80,7 @@ class PersonResourceTest {
             phone = new Phone(75849232, "Jojo");
             person.addPhone(phone);
 
+
             info1 = new CityInfo("4040", "nexø");
             address1 = new Address("lort", "pik", info);
             person1 = new Person("Fisse", "hej", address);
@@ -92,7 +93,9 @@ class PersonResourceTest {
 //            em.getTransaction().begin();
 //            em.persist(person);
 //            em.getTransaction().commit();
+
             pf.createPerson(new PersonDTO(person));
+            pf.createPerson(new PersonDTO(person1));
 
         } catch (MissingFieldsException e) {
             e.printStackTrace();
@@ -194,6 +197,6 @@ class PersonResourceTest {
                 .then()
                 .extract().body().jsonPath().getList("", CityInfoDTO.class);
 
-        assertThat(cityInfoDTOList, hasSize(1353));
+        assertThat(cityInfoDTOList, hasSize(1352));
     }
 }

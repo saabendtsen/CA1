@@ -35,16 +35,16 @@ public class Hobby {
     }
 
     public Hobby(HobbyDTO hDTO) {
-        this.id = hDTO.getId();
+        if (hDTO.getId() != null) {
+            this.id = hDTO.getId();
+        }
         this.name = hDTO.getName();
         this.description = hDTO.getDescription();
+        this.persons = new ArrayList<>();
     }
 
     public List<Person> addPersons(Person person) {
-        if (person != null) {
-            this.persons.add(person);
-            person.addHobby(this);
-        }
+        this.persons.add(person);
         return persons;
     }
 
@@ -79,7 +79,7 @@ public class Hobby {
 
     public List<Hobby> toDtos(List<HobbyDTO> hobbies) {
         List<Hobby> hobbyList = new ArrayList();
-        for (HobbyDTO pDTO: hobbies) {
+        for (HobbyDTO pDTO : hobbies) {
             hobbyList.add(new Hobby(pDTO));
         }
         return hobbyList;

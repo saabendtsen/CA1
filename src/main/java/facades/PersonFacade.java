@@ -43,33 +43,34 @@ public class PersonFacade {
         Person person = new Person(p);
         //Test if city exist
         try {
-            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
             if (ci != null) {
                 person.getAddress().setCityInfo(ci);
             }
             person.setHobbies(new ArrayList<>());
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
+                //System.out.println(p.getHobbies().get(i) + "Inside loop");
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
-
                 if (h != null) {
                     person.addHobby(h);
                 } else {
+                    System.out.println(p.getHobbies().get(i) + "Inside loop");
                     person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
+
+
         } catch (NoResultException e) {
             e.printStackTrace();
         }
 
-        for (Hobby h : newHobbies) {
-            person.addHobby(h);
-        }
-
         try {
             em.getTransaction().begin();
+            System.out.println(person.getHobbies().get(0).getId() + "just before persist");
             em.persist(person);
             em.getTransaction().commit();
+            System.out.println(person.getHobbies().get(0).getId() + "just after persist");
         } finally {
             em.close();
         }
