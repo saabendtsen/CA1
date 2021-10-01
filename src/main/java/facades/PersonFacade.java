@@ -53,12 +53,12 @@ public class PersonFacade {
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
-                System.out.println(h.getId() + "from get hobbies loop");
-
                 if (h != null) {
-                    newHobbies.add((h));
+                    //newHobbies.add((h));
+                    person.addHobby(h);
                 } else {
-                    newHobbies.add(new Hobby(p.getHobbies().get(i)));
+                    //newHobbies.add(new Hobby(p.getHobbies().get(i)));
+                    person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
 
@@ -66,13 +66,6 @@ public class PersonFacade {
         } catch (NoResultException e) {
             e.printStackTrace();
         }
-
-
-        for (Hobby h : newHobbies) {
-            person.addHobby(h);
-            System.out.println(h.getId() + "from loop");
-        }
-        System.out.println(person.getHobbies().get(0).getId());
 
         try {
             em.getTransaction().begin();
