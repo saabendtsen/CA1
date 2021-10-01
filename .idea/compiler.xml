@@ -14,7 +14,6 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CA1" options="-endorseddirs &quot;C:\Users\August\OneDrive - EFIF\Tredje Semester\CA1\target/endorsed&quot;" />
-      <module name="CA1" options="-endorseddirs &quot;D:\OneDrive - EFIF\Skrivebord\CA1\target/endorsed&quot;" />
       <module name="devops-starter" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
     </option>
   </component>

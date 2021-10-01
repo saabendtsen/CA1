@@ -45,7 +45,7 @@ public class PersonFacade {
 
         //Test if city exist
         try {
-            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
             if (ci != null) {
                 person.getAddress().setCityInfo(ci);
             }
@@ -53,7 +53,6 @@ public class PersonFacade {
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
-                System.out.println(h.getId() + "from get hobbies loop");
 
                 if (h != null) {
                     newHobbies.add((h));
@@ -61,25 +60,17 @@ public class PersonFacade {
                     newHobbies.add(new Hobby(p.getHobbies().get(i)));
                 }
             }
-
-
         } catch (NoResultException e) {
             e.printStackTrace();
         }
-
-
         for (Hobby h : newHobbies) {
             person.addHobby(h);
-            System.out.println(h.getId() + "from loop");
         }
-        System.out.println(person.getHobbies().get(0).getId());
 
         try {
             em.getTransaction().begin();
-            System.out.println(person.getHobbies().get(0).getId() + "just before persist");
             em.persist(person);
             em.getTransaction().commit();
-            System.out.println(person.getHobbies().get(0).getId() + "just after persist");
         } finally {
             em.close();
         }
@@ -127,61 +118,61 @@ public class PersonFacade {
     }
 
 
-        public PersonDTO getSinglePerson ( long id) throws PersonNotFoundException {
-            EntityManager em = emf.createEntityManager();
-            Person p = em.find(Person.class, id);
-            if (p == null) {
-                throw new PersonNotFoundException("Person id NOT found");
-            } else {
-                return new PersonDTO(p);
-            }
+    public PersonDTO getSinglePerson(long id) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        Person p = em.find(Person.class, id);
+        if (p == null) {
+            throw new PersonNotFoundException("Person id NOT found");
+        } else {
+            return new PersonDTO(p);
         }
+    }
 
-        public PersonDTO updatePerson (PersonDTO p) throws MissingFieldsException {
-            if (p.getFirstName() == null || p.getLastName() == null) {
-                throw new MissingFieldsException("One or more fields are missing!");
-            }
-            EntityManager em = emf.createEntityManager();
-            try {
-                em.getTransaction().begin();
-                //Person tempPerson = em.find(Person.class, p.getId());
-                //tempPerson = tempPerson.dtoPerson(p);
-                Person person = new Person(p);
-                em.merge(person);
-                em.getTransaction().commit();
-                return new PersonDTO(person);
-            } finally {
-                em.close();
-            }
+    public PersonDTO updatePerson(PersonDTO p) throws MissingFieldsException {
+        if (p.getFirstName() == null || p.getLastName() == null) {
+            throw new MissingFieldsException("One or more fields are missing!");
         }
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            //Person tempPerson = em.find(Person.class, p.getId());
+            //tempPerson = tempPerson.dtoPerson(p);
+            Person person = new Person(p);
+            em.merge(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
+    }
 
-        public PersonDTO deletePerson ( long id) throws PersonNotFoundException {
-            EntityManager em = emf.createEntityManager();
-            Person person;
-            try {
-                em.getTransaction().begin();
-                person = em.find(Person.class, id);
-                if (person == null) {
-                    throw new PersonNotFoundException("Could not delete, Person id does not exist!");
-                }
-                em.remove(person);
-                em.getTransaction().commit();
-                return new PersonDTO(person);
-            } finally {
-                em.close();
+    public PersonDTO deletePerson(long id) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        Person person;
+        try {
+            em.getTransaction().begin();
+            person = em.find(Person.class, id);
+            if (person == null) {
+                throw new PersonNotFoundException("Could not delete, Person id does not exist!");
             }
+            em.remove(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
         }
+    }
 
-        public List<PersonDTO> getAllPersons () {
-            EntityManager em = emf.createEntityManager();
-            try {
-                TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
-                List<Person> persons = query.getResultList();
-                return PersonDTO.getDtos(persons);
-            } finally {
-                em.close();
-            }
+    public List<PersonDTO> getAllPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+            List<Person> persons = query.getResultList();
+            return PersonDTO.getDtos(persons);
+        } finally {
+            em.close();
         }
+    }
 
 
     public List<PersonDTO> getAllPersonsWithHobby(String name) throws MissingFieldsException {
@@ -200,30 +191,30 @@ public class PersonFacade {
         }
     }
 
-        public List<PersonDTO> getAllPersonInCity (CityInfoDTO c) throws MissingFieldsException {
-            EntityManager em = emf.createEntityManager();
-            try {
-                if (c.getCity().equals("")) {
-                    throw new MissingFieldsException("One or more fields are missing!");
-                }
-                TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.city = :city", Person.class);
-                query.setParameter("city", c.getCity());
-                List<Person> personList = query.getResultList();
-                return PersonDTO.getDtos(personList);
-            } finally {
-                em.close();
+    public List<PersonDTO> getAllPersonInCity(String city) throws MissingFieldsException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            if (city.equals("")) {
+                throw new MissingFieldsException("One or more fields are missing!");
             }
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.city = :city", Person.class);
+            query.setParameter("city", city);
+            List<Person> personList = query.getResultList();
+            return PersonDTO.getDtos(personList);
+        } finally {
+            em.close();
         }
-
-        public List<CityInfoDTO> getAllZipcodes () {
-            EntityManager em = emf.createEntityManager();
-            try {
-                TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
-                List<CityInfo> zipcodes = query.getResultList();
-                return CityInfoDTO.getDtos(zipcodes);
-            } finally {
-                em.close();
-            }
-        }
-
     }
+
+    public List<CityInfoDTO> getAllZipcodes() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
+            List<CityInfo> zipcodes = query.getResultList();
+            return CityInfoDTO.getDtos(zipcodes);
+        } finally {
+            em.close();
+        }
+    }
+
+}

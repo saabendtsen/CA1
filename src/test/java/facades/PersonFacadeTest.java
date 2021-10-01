@@ -124,15 +124,13 @@ class PersonFacadeTest {
 
     @Test
     void getAllPersonsWithHobby() throws MissingFieldsException {
-//        HobbyDTO hobbyDTO = new HobbyDTO(hobby);
         List<PersonDTO> personDTOS = facade.getAllPersonsWithHobby(hobby.getName());
         assertEquals(person.getFirstName(), personDTOS.get(0).getFirstName());
     }
 
     @Test
     void getAllPersonInCity() throws MissingFieldsException {
-        CityInfoDTO cityInfoDTO = new CityInfoDTO(info);
-        List<PersonDTO> personDTOS = facade.getAllPersonInCity(cityInfoDTO);
+        List<PersonDTO> personDTOS = facade.getAllPersonInCity(person.getAddress().getCityInfo().getCity());
         assertEquals(person.getFirstName(), personDTOS.get(0).getFirstName());
     }
 

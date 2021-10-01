@@ -1,8 +1,11 @@
 package rest;
 
+import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.MissingFieldsException;
+import facades.PersonFacade;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
@@ -14,13 +17,14 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,9 +33,11 @@ class PersonResourceTest {
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
 
+
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
+    private final PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -43,6 +49,11 @@ class PersonResourceTest {
     private Phone phone;
     private Hobby hobby;
     private CityInfo info;
+    private Person person1;
+    private Address address1;
+    private Phone phone1;
+    private Hobby hobby1;
+    private CityInfo info1;
 
     @BeforeAll
     public static void setUpClass() {
@@ -61,7 +72,7 @@ class PersonResourceTest {
     void setUp() {
         EntityManager em = emf.createEntityManager();
         try {
-            info = new CityInfo("3730", "Nexø");
+            info = new CityInfo("737", "Depil");
             address = new Address("hej", "s", info);
             person = new Person("hej", "hasd", address);
             hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
@@ -69,11 +80,22 @@ class PersonResourceTest {
             phone = new Phone(75849232, "Jojo");
             person.addPhone(phone);
 
+            info1 = new CityInfo("4040", "nexø");
+            address1 = new Address("lort", "pik", info);
+            person1 = new Person("Fisse", "hej", address);
+            hobby1 = new Hobby("Skydning", "Skyd Søren i dilleren");
+            person1.addHobby(hobby);
+            phone1 = new Phone(75823232, "Nejnej");
+            person1.addPhone(phone);
 
-            em.getTransaction().begin();
-            em.persist(person);
-            em.getTransaction().commit();
 
+//            em.getTransaction().begin();
+//            em.persist(person);
+//            em.getTransaction().commit();
+            pf.createPerson(new PersonDTO(person));
+
+        } catch (MissingFieldsException e) {
+            e.printStackTrace();
         } finally {
             em.close();
         }
@@ -142,19 +164,36 @@ class PersonResourceTest {
     void getAllPersonsWithHobby() {
         given()
                 .contentType(ContentType.JSON)
-                .body(new HobbyDTO(hobby))
-                .when()
-                .get("/person/hobby").then()
-                .body("firstName", equalTo(person.getFirstName()))
-                .body("lastName", equalTo(person.getLastName()))
+                .get("/person/hobby/" + hobby.getName()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", hasItem(person1.getFirstName()))
+                .body("lastName", hasItem(person1.getLastName()))
                 .body("id", notNullValue());
     }
 
     @Test
     void getAllPersonInCity() {
+        given()
+                .contentType(ContentType.JSON)
+                .get("/person/city/" + person.getAddress().getCityInfo().getCity())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", hasItem(person.getFirstName()))
+                .body("lastName", hasItem(person.getLastName()))
+                .body("id", notNullValue());
     }
 
     @Test
     void getAllZipcodes() {
+        List<CityInfoDTO> cityInfoDTOList;
+        cityInfoDTOList = given()
+                .contentType(ContentType.JSON)
+                .get("/person/zipcodes")
+                .then()
+                .extract().body().jsonPath().getList("", CityInfoDTO.class);
+
+        assertThat(cityInfoDTOList, hasSize(1353));
     }
 }

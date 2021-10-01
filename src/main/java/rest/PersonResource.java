@@ -71,22 +71,16 @@ public class PersonResource {
     @GET
     @Path("hobby/{hobby}")
     @Produces("application/json")
-    @Consumes("application/json")
     public Response getAllPersonsWithHobby(@PathParam("hobby") String hobby) throws MissingFieldsException {
-
-
-//            HobbyDTO hobbyDTO = gson.fromJson(hobby, HobbyDTO.class);
             List<PersonDTO> dto = pf.getAllPersonsWithHobby(hobby);
             return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
     @GET
-    @Path("city")
+    @Path("city/{city}")
     @Produces("application/json")
-    @Consumes("application/json")
-    public Response getAllPersonInCity(String city) throws MissingFieldsException {
-        CityInfoDTO cityInfoDTO = gson.fromJson(city, CityInfoDTO.class);
-        List<PersonDTO> dto = pf.getAllPersonInCity(cityInfoDTO);
+    public Response getAllPersonInCity(@PathParam("city") String city) throws MissingFieldsException {
+        List<PersonDTO> dto = pf.getAllPersonInCity(city);
         return Response.ok(gson.toJson(dto), "application/json").build();
     }
 }
