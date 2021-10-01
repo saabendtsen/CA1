@@ -132,14 +132,28 @@ public class PersonFacade {
         }
     }
 
-    public List<PersonDTO> getAllPersonsWithHobby(HobbyDTO h) throws MissingFieldsException {
+//    public List<PersonDTO> getAllPersonsWithHobby(HobbyDTO h) throws MissingFieldsException {
+//        EntityManager em = emf.createEntityManager();
+//        try {
+//            if (h.getName().equals("")){
+//                throw new MissingFieldsException("One or more fields are missing!");
+//            }
+//            TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
+//            query.setParameter("name", h.getName());
+//            List<Person> persons = query.getResultList();
+//            return PersonDTO.getDtos(persons);
+//        }finally {
+//            em.close();
+//        }
+//    }
+    public List<PersonDTO> getAllPersonsWithHobby(String name) throws MissingFieldsException {
         EntityManager em = emf.createEntityManager();
         try {
-            if (h.getName().equals("")){
+            if (name.equals("")){
                 throw new MissingFieldsException("One or more fields are missing!");
             }
             TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
-            query.setParameter("name", h.getName());
+            query.setParameter("name", name);
             List<Person> persons = query.getResultList();
             return PersonDTO.getDtos(persons);
         }finally {

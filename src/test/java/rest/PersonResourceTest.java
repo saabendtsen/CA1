@@ -1,12 +1,17 @@
 package rest;
 
+import dtos.HobbyDTO;
+import dtos.PersonDTO;
 import entities.*;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
+import io.restassured.specification.RequestSpecification;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -39,9 +44,6 @@ class PersonResourceTest {
     private Hobby hobby;
     private CityInfo info;
 
-
-
-
     @BeforeAll
     public static void setUpClass() {
         //This method must be called before you request the EntityManagerFactory
@@ -54,6 +56,7 @@ class PersonResourceTest {
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
     }
+
     @BeforeEach
     void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -75,6 +78,7 @@ class PersonResourceTest {
             em.close();
         }
     }
+
     @AfterEach
     void tearDown() {
         EntityManager em = emf.createEntityManager();
@@ -118,13 +122,12 @@ class PersonResourceTest {
 
     @Test
     void getSinglePerson() {
-        String pid = person.getId().toString();
         given()
                 .contentType("application/json")
                 .get("/person/" + person.getId()).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("id", equalTo(pid));
+                .body("id", equalTo(new Long(person.getId()).intValue()));
     }
 
     @Test
@@ -137,6 +140,14 @@ class PersonResourceTest {
 
     @Test
     void getAllPersonsWithHobby() {
+        given()
+                .contentType(ContentType.JSON)
+                .body(new HobbyDTO(hobby))
+                .when()
+                .get("/person/hobby").then()
+                .body("firstName", equalTo(person.getFirstName()))
+                .body("lastName", equalTo(person.getLastName()))
+                .body("id", notNullValue());
     }
 
     @Test

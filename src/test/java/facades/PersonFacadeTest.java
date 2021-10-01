@@ -124,8 +124,8 @@ class PersonFacadeTest {
 
     @Test
     void getAllPersonsWithHobby() throws MissingFieldsException {
-        HobbyDTO hobbyDTO = new HobbyDTO(hobby);
-        List<PersonDTO> personDTOS = facade.getAllPersonsWithHobby(hobbyDTO);
+//        HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+        List<PersonDTO> personDTOS = facade.getAllPersonsWithHobby(hobby.getName());
         assertEquals(person.getFirstName(), personDTOS.get(0).getFirstName());
     }
 
