@@ -55,14 +55,17 @@ public class PersonFacade {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
 
                 if (h != null) {
-                    newHobbies.add((h));
+                    //newHobbies.add((h));
+                    person.addHobby(h);
                 } else {
-                    newHobbies.add(new Hobby(p.getHobbies().get(i)));
+                    //newHobbies.add(new Hobby(p.getHobbies().get(i)));
+                    person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
         } catch (NoResultException e) {
             e.printStackTrace();
         }
+
         for (Hobby h : newHobbies) {
             person.addHobby(h);
         }
