@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonFacade {
@@ -39,32 +40,53 @@ public class PersonFacade {
             throw new MissingFieldsException("Fields are missing!");
         }
         EntityManager em = emf.createEntityManager();
+
+
+        Person person = new Person(p);
+        List<Hobby> newHobbies = new ArrayList<>();
+
+        //Test if city exist
         try {
             CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode());
             if (ci != null) {
-                CityInfoDTO c = new CityInfoDTO(ci);
-                p.getAddress().setCityInfoDTO(c);
-                p.getAddress().setId(c.getId()); //Lortet virker ikke
+                person.getAddress().setCityInfo(ci);
             }
 
+
+
+            person.setHobbies(new ArrayList<>());
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
-                Hobby h = searchHobbys(p.getHobbies().get(i).getName());
+                Hobby h = searchHobbys(p.getHobbies().get(i).getName(),em);
+                System.out.println(h.getId() + "from get hobbies loop");
+
                 if (h != null) {
-                    HobbyDTO dto = new HobbyDTO(h);
-                    p.getHobbies().set(i,dto);
-                    p.getHobbies().set(i,dto).setId(dto.getId()); //Lortet virker ikke
+
+                    newHobbies.add((h));
+                } else {
+                    newHobbies.add(new Hobby(p.getHobbies().get(i)));
                 }
             }
+
 
         } catch (NoResultException e) {
             e.printStackTrace();
         }
-        Person person = new Person(p);
+
+
+        for(Hobby h : newHobbies){
+            person.addHobby(h);
+            System.out.println(h.getId() + "from loop");
+        }
+        System.out.println(person.getHobbies().get(0).getId());
+
         try {
             em.getTransaction().begin();
+            System.out.println(person.getHobbies().get(0).getId() + "just before persist");
             em.persist(person);
             em.getTransaction().commit();
+            System.out.println(person.getHobbies().get(0).getId() + "just after persist");
+
         } finally {
             em.close();
         }
@@ -72,8 +94,8 @@ public class PersonFacade {
     }
 
 
-    public Hobby searchHobbys(String hobby) {
-        EntityManager em = emf.createEntityManager();
+    public Hobby searchHobbys(String hobby, EntityManager em) {
+        //EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h where h.name = :name", Hobby.class);
             query.setParameter("name", hobby);
@@ -84,7 +106,7 @@ public class PersonFacade {
                 return null;
             }
         } finally {
-            em.close();
+            //em.close();
         }
     }
 

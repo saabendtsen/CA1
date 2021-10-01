@@ -18,7 +18,9 @@ public class HobbyDTO {
 
 
     public HobbyDTO(Hobby hobby) {
-        this.id = hobby.getId();
+        if (hobby.getId() != null) {
+            this.id = hobby.getId();
+        }
         this.name = hobby.getName();
         this.description = hobby.getDescription();
     }
