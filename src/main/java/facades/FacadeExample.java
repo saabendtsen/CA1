@@ -13,7 +13,7 @@ import utils.EMF_Creator;
  * Rename Class to a relevant name Add add relevant facade methods
  */
 public class FacadeExample {
-
+// håber det virker
     private static FacadeExample instance;
     private static EntityManagerFactory emf;
     
