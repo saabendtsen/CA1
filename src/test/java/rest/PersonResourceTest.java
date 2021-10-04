@@ -91,8 +91,8 @@ class PersonResourceTest {
 //            em.persist(person);
 //            em.getTransaction().commit();
 
-            pf.createPerson(new PersonDTO(person));
-            pf.createPerson(new PersonDTO(person1));
+            person = new Person(pf.createPerson(new PersonDTO(person)));
+            person1 = new Person(pf.createPerson(new PersonDTO(person1)));
 
         } catch (MissingFieldsException e) {
             e.printStackTrace();
@@ -146,7 +146,7 @@ class PersonResourceTest {
     void getSinglePerson() {
         given()
                 .contentType("application/json")
-                .get("/person/" + person.getId()).then()
+                .get("/person/" + person.getId() ).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("id", equalTo(new Long(person.getId()).intValue()));
