@@ -83,7 +83,7 @@ class PersonResourceTest {
             person1 = new Person("Karsten", "Abdula", address);
             hobby1 = new Hobby("Skydning", "pow pow pow");
             person1.addHobby(hobby);
-            phone1 = new Phone(75823232, "Motorola fra 86");
+            phone1 = new Phone(75823232, "Motorola fra 89");
             person1.addPhone(phone);
 
 
