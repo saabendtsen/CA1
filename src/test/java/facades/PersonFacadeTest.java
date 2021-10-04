@@ -36,21 +36,31 @@ class PersonFacadeTest {
 
     @AfterAll
     public static void tearDownClass() {
-
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
     }
 
     @BeforeEach
     void setUp() throws MissingFieldsException {
-            info = new CityInfo("3730", "Nexø");
-            address = new Address("hej", "s", info);
-            person = new Person("hej", "hasd", address);
-            hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
-            person.addHobby(hobby);
-            phone = new Phone(75849232, "Jojo");
-            person.addPhone(phone);
+        info = new CityInfo("335", "Depil");
+        address = new Address("Gågaden 5", "Til venstre for gelædneret", info);
+        person = new Person("Niller", "Hassan", address);
+        hobby = new Hobby("Skydning", "Pow pow pow");
+        person.addHobby(hobby);
+        phone = new Phone(75849232, "Nokiephone");
+        person.addPhone(phone);
 
-
-            person = new Person(facade.createPerson(new PersonDTO(person)));
+        person = new Person(facade.createPerson(new PersonDTO(person)));
 
     }
 
@@ -72,7 +82,7 @@ class PersonFacadeTest {
 
     @Test
     void createPerson() throws Exception {
-        CityInfo cityInfo = new CityInfo("0001","Younes");
+        CityInfo cityInfo = new CityInfo("335","Younes");
         Address address1 = new Address("Bøgevej", "Lige nede af vejen lol", cityInfo);
         Person person1 = new Person("Jens", "hansen");
 
@@ -88,7 +98,6 @@ class PersonFacadeTest {
 
         PersonDTO actual = facade.createPerson(new PersonDTO(person1));
         assertEquals(actual.getFirstName(), person1.getFirstName());
-
 
     }
 
@@ -133,4 +142,6 @@ class PersonFacadeTest {
         List<CityInfoDTO> cityInfos = facade.getAllZipcodes();
         assertEquals(cityInfos.size(), 1353);
     }
+
+
 }
