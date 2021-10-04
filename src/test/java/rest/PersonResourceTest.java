@@ -69,7 +69,7 @@ class PersonResourceTest {
     void setUp() {
         EntityManager em = emf.createEntityManager();
         try {
-            info = new CityInfo("737", "Depil");
+            info = new CityInfo("735", "Depil");
             address = new Address("Gågaden 5", "Til venstre for gelædneret", info);
             person = new Person("Niller", "Hassan", address);
             hobby = new Hobby("Skydning", "Pow pow pow");
@@ -78,7 +78,7 @@ class PersonResourceTest {
             person.addPhone(phone);
 
 
-            info1 = new CityInfo("4040", "nexø");
+            info1 = new CityInfo("1267", "København K");
             address1 = new Address("Stenstregen 3", "Det kolde nord", info);
             person1 = new Person("Karsten", "Abdula", address);
             hobby1 = new Hobby("Skydning", "pow pow pow");
