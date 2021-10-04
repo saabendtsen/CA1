@@ -108,13 +108,16 @@ class PersonFacadeTest {
         Address newA = new Address("New Address", "new Address",info);
         Hobby newH = new Hobby("Bagning","ovnen");
         person.addHobby(newH);
-
         person.setAddress(newA);
+        Phone ph = new Phone(12312313,"");
+        person.addPhone(ph);
+        person.getPhone().remove(0);
+
         PersonDTO personDTO = facade.updatePerson(new PersonDTO(person));
 
         assertEquals(person.getAddress().getStreet(), personDTO.getAddress().getStreet());
         assertEquals(person.getHobbies().get(0).getName(),personDTO.getHobbies().get(0).getName());
-
+        assertEquals(person.getPhone().get(0).getNumber(),personDTO.getPhones().get(0).getNumber());
     }
 
     @Test
