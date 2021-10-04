@@ -55,7 +55,6 @@ public class PersonFacade {
                 if (h != null) {
                     person.addHobby(h);
                 } else {
-                    System.out.println(p.getHobbies().get(i) + "Inside loop");
                     person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
@@ -67,10 +66,8 @@ public class PersonFacade {
 
         try {
             em.getTransaction().begin();
-            System.out.println(person.getHobbies().get(0).getId() + "just before persist");
             em.persist(person);
             em.getTransaction().commit();
-            System.out.println(person.getHobbies().get(0).getId() + "just after persist");
         } finally {
             em.close();
         }

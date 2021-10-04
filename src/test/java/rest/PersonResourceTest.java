@@ -1,7 +1,6 @@
 package rest;
 
 import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
 import errorhandling.MissingFieldsException;
@@ -9,14 +8,13 @@ import facades.PersonFacade;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
-import io.restassured.specification.RequestSpecification;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -26,7 +24,6 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PersonResourceTest {
 
@@ -112,8 +109,8 @@ class PersonResourceTest {
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            // em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            // em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
