@@ -2,6 +2,7 @@ package facades;
 
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
+import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
@@ -130,26 +131,30 @@ public class PersonFacade {
             throw new MissingFieldsException("One or more fields are missing!");
         }
 
-        Person person = new Person(p);
+        Person entityPerson = em.find(Person.class, p.getId());
+        entityPerson.setAddress(new Address(p.getAddress()));
 
-        Person tmpPerson = em.find(Person.class, p.getId());
-
-        tmpPerson.setAddress(person.getAddress());
-
+  //      Address entityAddres = em.find(Address.class,p.getAddress().getId());
+//        entityPerson.setAddress(em.find(Address.class,p.getAddress().getId()));
 
         try {
             CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
             if (ci != null) {
-                tmpPerson.getAddress().setCityInfo(ci);
+                entityPerson.getAddress().setCityInfo(ci);
             }
 
-            tmpPerson.setHobbies(new ArrayList<>());
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
                 if (h != null) {
-                    tmpPerson.addHobby(h);
+                    for(Hobby eh: entityPerson.getHobbies()){
+                        if (eh.getName().equals(h.getName())){
+                            continue;
+                        } else {
+                            entityPerson.addHobby(h);
+                        }
+                    }
                 } else {
-                    tmpPerson.addHobby(new Hobby(p.getHobbies().get(i)));
+                    entityPerson.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
         } catch (NoResultException e) {
@@ -157,8 +162,10 @@ public class PersonFacade {
         }
 
         try {
-            em.merge(tmpPerson);
-            return new PersonDTO(tmpPerson);
+            em.getTransaction().begin();
+            em.merge(entityPerson);
+            em.getTransaction().commit();
+            return new PersonDTO(entityPerson);
         } finally {
             em.close();
         }

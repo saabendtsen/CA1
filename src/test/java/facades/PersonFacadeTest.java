@@ -106,11 +106,14 @@ class PersonFacadeTest {
     @Test
     void updatePerson() throws Exception {
         Address newA = new Address("New Address", "new Address",info);
+        Hobby newH = new Hobby("Bagning","ovnen");
+        person.addHobby(newH);
 
         person.setAddress(newA);
         PersonDTO personDTO = facade.updatePerson(new PersonDTO(person));
 
         assertEquals(person.getAddress().getStreet(), personDTO.getAddress().getStreet());
+        assertEquals(person.getHobbies().get(0).getName(),personDTO.getHobbies().get(0).getName());
 
     }
 

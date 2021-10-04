@@ -42,6 +42,9 @@ public class Address {
     }
 
     public Address(AddressDTO address) {
+        if (address.getId() != null){
+            this.id = address.getId();
+        }
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
         this.cityInfo = new CityInfo(address.getCityInfoDTO());
