@@ -2,10 +2,8 @@ package facades;
 
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
-import entities.Address;
-import entities.CityInfo;
-import entities.Hobby;
-import entities.Person;
+import dtos.PhoneDTO;
+import entities.*;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
 
@@ -43,7 +41,7 @@ public class PersonFacade {
         Person person = new Person(p);
         //Test if city exist
         try {
-            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
             if (ci != null) {
                 person.getAddress().setCityInfo(ci);
             }
@@ -58,8 +56,6 @@ public class PersonFacade {
                     person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
-
-
         } catch (NoResultException e) {
             e.printStackTrace();
         }
@@ -133,21 +129,34 @@ public class PersonFacade {
 
         Person entityPerson = em.find(Person.class, p.getId());
         entityPerson.setAddress(new Address(p.getAddress()));
+        entityPerson.setPhone(new ArrayList<>());
 
-  //      Address entityAddres = em.find(Address.class,p.getAddress().getId());
-//        entityPerson.setAddress(em.find(Address.class,p.getAddress().getId()));
+        for (PhoneDTO pDTO : p.getPhones()) {
+            entityPerson.addPhone(new Phone(pDTO));
+        }
+
+
+        //      Address entityAddres = em.find(Address.class,p.getAddress().getId());
+        //        entityPerson.setAddress(em.find(Address.class,p.getAddress().getId()));
+
+        List<Phone> ph = entityPerson.getPhone();
+
 
         try {
-            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
+
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
             if (ci != null) {
                 entityPerson.getAddress().setCityInfo(ci);
             }
 
+            List<Hobby> loopList = entityPerson.getHobbies();
+
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
                 if (h != null) {
-                    for(Hobby eh: entityPerson.getHobbies()){
-                        if (eh.getName().equals(h.getName())){
+                    for (int j = 0; j < loopList.size(); j++) {
+                        Hobby eh = loopList.get(j);
+                        if (eh == h) {
                             continue;
                         } else {
                             entityPerson.addHobby(h);
@@ -158,7 +167,7 @@ public class PersonFacade {
                 }
             }
         } catch (NoResultException e) {
-            e.printStackTrace();
+            throw new MissingFieldsException("fejl!: " + e);
         }
 
         try {
