@@ -73,20 +73,20 @@ class PersonResourceTest {
         EntityManager em = emf.createEntityManager();
         try {
             info = new CityInfo("737", "Depil");
-            address = new Address("hej", "s", info);
-            person = new Person("hej", "hasd", address);
-            hobby = new Hobby("Skydning", "Skyd Søren i dilleren");
+            address = new Address("Gågaden 5", "Til venstre for gelædneret", info);
+            person = new Person("Niller", "Hassan", address);
+            hobby = new Hobby("Skydning", "Pow pow pow");
             person.addHobby(hobby);
-            phone = new Phone(75849232, "Jojo");
+            phone = new Phone(75849232, "Nokiephone");
             person.addPhone(phone);
 
 
             info1 = new CityInfo("4040", "nexø");
-            address1 = new Address("lort", "pik", info);
-            person1 = new Person("Fisse", "hej", address);
-            hobby1 = new Hobby("Skydning", "Skyd Søren i dilleren");
+            address1 = new Address("Stenstregen 3", "Det kolde nord", info);
+            person1 = new Person("Karsten", "Abdula", address);
+            hobby1 = new Hobby("Skydning", "pow pow pow");
             person1.addHobby(hobby);
-            phone1 = new Phone(75823232, "Nejnej");
+            phone1 = new Phone(75823232, "Motorola fra 86");
             person1.addPhone(phone);
 
 
