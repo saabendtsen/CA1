@@ -134,7 +134,14 @@ class PersonResourceTest {
 
     @Test
     void getAllPersons() {
+        List<PersonDTO> personDTOS;
+        personDTOS = given()
+                .contentType(ContentType.JSON)
+                .get("/person")
+                .then()
+                .extract().body().jsonPath().getList("", PersonDTO.class);
 
+        assertThat(personDTOS, hasSize(2));
     }
 
 
