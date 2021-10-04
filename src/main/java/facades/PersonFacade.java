@@ -133,9 +133,8 @@ public class PersonFacade {
         Person person = new Person(p);
 
         Person tmpPerson = em.find(Person.class, p.getId());
-
         tmpPerson.setAddress(person.getAddress());
-
+        tmpPerson.setPhone(person.getPhone());
 
         try {
             CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
