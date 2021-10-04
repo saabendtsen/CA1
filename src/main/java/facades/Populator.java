@@ -44,6 +44,7 @@ public class Populator {
         em.getTransaction().begin();
         em.persist(person);
         em.getTransaction().commit();
+        em.close();
        //pf.createPerson(new PersonDTO(person));
 
 

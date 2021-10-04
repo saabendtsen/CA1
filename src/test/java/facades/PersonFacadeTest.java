@@ -61,21 +61,21 @@ class PersonFacadeTest {
         }
     }
 
-    @AfterEach
-    void tearDown() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
+//    @AfterEach
+//    void tearDown() {
+//        EntityManager em = emf.createEntityManager();
+//        try {
+//            em.getTransaction().begin();
+//            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+////            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+////            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     @Test
     void createPerson() throws Exception {
@@ -103,8 +103,7 @@ class PersonFacadeTest {
         PersonDTO pDTO = facade.getSinglePerson(person.getId());
         assertEquals(pDTO.getId(), person.getId());
     }
-
-   // @Test
+    @Test
     void updatePerson() throws Exception {
         Address newA = new Address("New Address", "new Address",info);
 

@@ -116,6 +116,10 @@ public class Person {
         this.hobbies = hobbies;
     }
 
+    public void setPhone(List<Phone> phone) {
+        this.phone = phone;
+    }
+
     public void addHobby(Hobby hobby) {
         this.hobbies.add(hobby);
         if (hobby != null) {

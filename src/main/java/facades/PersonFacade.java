@@ -1,7 +1,6 @@
 package facades;
 
 import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.CityInfo;
 import entities.Hobby;
@@ -126,18 +125,40 @@ public class PersonFacade {
     }
 
     public PersonDTO updatePerson(PersonDTO p) throws MissingFieldsException {
+        EntityManager em = emf.createEntityManager();
         if (p.getFirstName() == null || p.getLastName() == null) {
             throw new MissingFieldsException("One or more fields are missing!");
         }
-        EntityManager em = emf.createEntityManager();
+
+        Person person = new Person(p);
+
+        Person tmpPerson = em.find(Person.class, p.getId());
+
+        tmpPerson.setAddress(person.getAddress());
+
+
         try {
-            em.getTransaction().begin();
-            //Person tempPerson = em.find(Person.class, p.getId());
-            //tempPerson = tempPerson.dtoPerson(p);
-            Person person = new Person(p);
-            em.merge(person);
-            em.getTransaction().commit();
-            return new PersonDTO(person);
+            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(),em);
+            if (ci != null) {
+                tmpPerson.getAddress().setCityInfo(ci);
+            }
+
+            tmpPerson.setHobbies(new ArrayList<>());
+            for (int i = 0; i < p.getHobbies().size(); i++) {
+                Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
+                if (h != null) {
+                    tmpPerson.addHobby(h);
+                } else {
+                    tmpPerson.addHobby(new Hobby(p.getHobbies().get(i)));
+                }
+            }
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            em.merge(tmpPerson);
+            return new PersonDTO(tmpPerson);
         } finally {
             em.close();
         }
