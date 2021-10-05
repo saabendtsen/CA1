@@ -17,7 +17,7 @@ public class Address {
     private String street;
     private String additionalInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "address")
     private List<Person> persons;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private CityInfo cityInfo;

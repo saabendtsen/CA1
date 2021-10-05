@@ -18,12 +18,12 @@ public class Person {
     private Long id;
     private String firstName;
     private String lastName;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private List<Phone> phone;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "persons")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "persons")
     @JoinTable(name = "HOBBY")
     private List<Hobby> hobbies;
 

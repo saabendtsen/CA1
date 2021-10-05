@@ -5,16 +5,11 @@
  */
 package facades;
 
-import dtos.PersonDTO;
-import dtos.RenameMeDTO;
 import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

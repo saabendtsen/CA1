@@ -2,6 +2,6 @@ package errorhandling;
 
 public class MissingFieldsException extends Exception {
     public MissingFieldsException(String message) {
-        super(message);
+        super("Field input Error: "+message);
     }
 }

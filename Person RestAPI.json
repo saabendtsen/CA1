@@ -67,7 +67,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\": \"adad\",\r\n    \"lastName\": \"adadad\",\r\n    \"address\": {\r\n        \"street\": \"vej 196\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"2900\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\"\r\n        },\r\n        {\r\n            \"name\": \"Amatørradio\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"firstName\": \"Fornavn\",\r\n    \"lastName\": \"Efternavn\",\r\n    \"address\": {\r\n        \"street\": \"vej 123\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"3400\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\"\r\n        },\r\n        {\r\n            \"name\": \"Amatør\",\r\n            \"description\": \"https://www.Amatør.dk\"\r\n        }\r\n        \r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/CA1/api/person/1",
+					"raw": "http://localhost:8080/CA1/api/person/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -126,7 +126,7 @@
 						"CA1",
 						"api",
 						"person",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -174,7 +174,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/CA1/api/person/hobby/Bowling",
+					"raw": "http://localhost:8080/CA1/api/person/hobby/Amatør",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -185,19 +185,19 @@
 						"api",
 						"person",
 						"hobby",
-						"Bowling"
+						"Amatør"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "All Persons in a City",
+			"name": "All Persons in a zipcode",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/CA1/api/person/city/Helsingør",
+					"raw": "http://localhost:8080/CA1/api/person/zipcode/3400",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -207,8 +207,8 @@
 						"CA1",
 						"api",
 						"person",
-						"city",
-						"Helsingør"
+						"zipcode",
+						"3400"
 					]
 				}
 			},

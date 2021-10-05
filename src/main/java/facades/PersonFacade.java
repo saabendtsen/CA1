@@ -35,6 +35,7 @@ public class PersonFacade {
         return instance;
     }
 
+    //
     public PersonDTO createPerson(PersonDTO p) throws MissingFieldsException {
         if (p == null) {
             throw new MissingFieldsException("Fields are missing!");
@@ -46,8 +47,14 @@ public class PersonFacade {
             if (ci != null) {
                 person.getAddress().setCityInfo(ci);
             }
-            person.setHobbies(new ArrayList<>());
 
+            person.setPhone(new ArrayList<>());
+
+            for (PhoneDTO pDTO : p.getPhones()) {
+                person.addPhone(new Phone(pDTO));
+            }
+
+            person.setHobbies(new ArrayList<>());
             for (int i = 0; i < p.getHobbies().size(); i++) {
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
                 if (h != null) {
@@ -56,8 +63,8 @@ public class PersonFacade {
                     person.addHobby(new Hobby(p.getHobbies().get(i)));
                 }
             }
-        } catch (NoResultException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new MissingFieldsException(e.getMessage());
         }
 
         try {
@@ -121,12 +128,9 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO updatePerson(PersonDTO p) throws MissingFieldsException {
+    public PersonDTO updatePerson(PersonDTO p) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
-        if (p == null) {
-            throw new MissingFieldsException("One or more fields are missing!");
-        } else {
-
+        if (p != null) {
             Person entityPerson = em.find(Person.class, p.getId());
             entityPerson.setFirstName(p.getFirstName());
             entityPerson.setLastName(p.getLastName());
@@ -161,7 +165,7 @@ public class PersonFacade {
                     }
                 }
             } catch (Exception e) {
-                throw new MissingFieldsException("fejl!: " + e);
+                throw new PersonNotFoundException(e.getMessage());
             }
 
             try {
@@ -172,17 +176,18 @@ public class PersonFacade {
             } finally {
                 em.close();
             }
+        } else {
+            throw new PersonNotFoundException("Person not found!");
         }
     }
 
     public PersonDTO deletePerson(long id) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
-        Person person;
         try {
             em.getTransaction().begin();
-            person = em.find(Person.class, id);
+            Person person = em.find(Person.class, id);
             if (person == null) {
-                throw new PersonNotFoundException("Could not delete, Person id does not exist!");
+                throw new PersonNotFoundException("Person with id: "+id+" does not exist");
             }
             em.remove(person);
             em.getTransaction().commit();
@@ -203,32 +208,33 @@ public class PersonFacade {
         }
     }
 
-
-    public List<PersonDTO> getAllPersonsWithHobby(String name) throws MissingFieldsException {
+    public List<PersonDTO> getAllPersonsWithHobby(String name) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
-            if (name.equals("")) {
-                throw new MissingFieldsException("One or more fields are missing!");
-            }
-            TypedQuery<Person> query = em.createQuery("SELECT h.persons FROM Hobby h WHERE h.name = :name", Person.class);
+            TypedQuery<Person> query = em.createQuery("SELECT p from Person p join p.hobbies h WHERE h.name = :name", Person.class);
             query.setParameter("name", name);
             List<Person> persons = query.getResultList();
+            if (persons.size() == 0) {
+                throw new PersonNotFoundException("No persons with hobby: "+name+" found!");
+            }
             return PersonDTO.getDtos(persons);
         } finally {
             em.close();
-
         }
     }
 
-    public List<PersonDTO> getAllPersonInCity(String city) throws MissingFieldsException {
+    public List<PersonDTO> getAllPersonInZipcode(String zipcode) throws MissingFieldsException {
         EntityManager em = emf.createEntityManager();
         try {
-            if (city.equals("")) {
-                throw new MissingFieldsException("One or more fields are missing!");
+            if (zipcode.equals("")) {
+                throw new MissingFieldsException("Zipcode field is missing!");
             }
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.city = :city", Person.class);
-            query.setParameter("city", city);
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.zipcode = :zipcode", Person.class);
+            query.setParameter("zipcode", zipcode);
             List<Person> personList = query.getResultList();
+            if (personList.size() == 0) {
+                throw new MissingFieldsException("No persons living in: "+zipcode+" found");
+            }
             return PersonDTO.getDtos(personList);
         } finally {
             em.close();

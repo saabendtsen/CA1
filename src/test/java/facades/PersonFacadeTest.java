@@ -5,6 +5,7 @@ import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
 import errorhandling.MissingFieldsException;
+import errorhandling.PersonNotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -127,14 +128,14 @@ class PersonFacadeTest {
     }
 
     @Test
-    void getAllPersonsWithHobby() throws MissingFieldsException {
+    void getAllPersonsWithHobby() throws PersonNotFoundException {
         List<PersonDTO> personDTOS = facade.getAllPersonsWithHobby(hobby.getName());
         assertEquals(person.getFirstName(), personDTOS.get(0).getFirstName());
     }
 
     @Test
     void getAllPersonInCity() throws MissingFieldsException {
-        List<PersonDTO> personDTOS = facade.getAllPersonInCity(person.getAddress().getCityInfo().getCity());
+        List<PersonDTO> personDTOS = facade.getAllPersonInZipcode(person.getAddress().getCityInfo().getZipcode());
         assertEquals(person.getFirstName(), personDTOS.get(0).getFirstName());
     }
 

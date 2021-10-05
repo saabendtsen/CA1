@@ -9,6 +9,7 @@ import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
+
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -45,7 +46,7 @@ public class PersonResource {
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public Response editPerson(String person) throws MissingFieldsException {
+    public Response editPerson(String person) throws PersonNotFoundException {
         PersonDTO dto = gson.fromJson(person, PersonDTO.class);
         dto = pf.updatePerson(dto);
         System.out.println(dto);
@@ -72,16 +73,16 @@ public class PersonResource {
     @GET
     @Path("hobby/{hobby}")
     @Produces("application/json")
-    public Response getAllPersonsWithHobby(@PathParam("hobby") String hobby) throws MissingFieldsException {
-            List<PersonDTO> dto = pf.getAllPersonsWithHobby(hobby);
-            return Response.ok(gson.toJson(dto), "application/json").build();
+    public Response getAllPersonsWithHobby(@PathParam("hobby") String hobby) throws PersonNotFoundException {
+        List<PersonDTO> dto = pf.getAllPersonsWithHobby(hobby);
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 
     @GET
-    @Path("city/{city}")
+    @Path("zipcode/{zipcode}")
     @Produces("application/json")
-    public Response getAllPersonInCity(@PathParam("city") String city) throws MissingFieldsException {
-        List<PersonDTO> dto = pf.getAllPersonInCity(city);
+    public Response getAllPersonInCity(@PathParam("zipcode") String zipcode) throws MissingFieldsException {
+        List<PersonDTO> dto = pf.getAllPersonInZipcode(zipcode);
         return Response.ok(gson.toJson(dto), "application/json").build();
     }
 }
