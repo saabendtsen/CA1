@@ -67,7 +67,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\": \"Fornavn\",\r\n    \"lastName\": \"Efternavn\",\r\n    \"address\": {\r\n        \"street\": \"vej 123\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"3400\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\"\r\n        },\r\n        {\r\n            \"name\": \"Amatør\",\r\n            \"description\": \"https://www.Amatør.dk\"\r\n        }\r\n        \r\n    ]\r\n}",
+					"raw": "{\r\n    \"firstName\": \"Fornavn\",\r\n    \"lastName\": \"Efternavn\",\r\n    \"address\": {\r\n        \"street\": \"vej 123\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"3400\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\"\r\n        },\r\n        {\r\n            \"name\": \"Amatør\",\r\n            \"description\": \"https://www.Amatør.dk\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
