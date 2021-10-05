@@ -1,10 +1,7 @@
 package dtos;
 
 import entities.Hobby;
-import entities.Person;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +22,9 @@ public class HobbyDTO {
         this.description = hobby.getDescription();
     }
 
-    public static List<HobbyDTO> getDtos(List<Hobby> p){
+    public static List<HobbyDTO> getDtos(List<Hobby> p) {
         List<HobbyDTO> pdtos = new ArrayList();
-        p.forEach(rm->pdtos.add(new HobbyDTO(rm)));
+        p.forEach(rm -> pdtos.add(new HobbyDTO(rm)));
         return pdtos;
     }
 

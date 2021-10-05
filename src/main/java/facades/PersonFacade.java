@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +36,11 @@ public class PersonFacade {
     }
 
     public PersonDTO createPerson(PersonDTO p) throws MissingFieldsException {
-        if (p.getFirstName() == null || p.getLastName() == null) {
+        if (p == null) {
             throw new MissingFieldsException("Fields are missing!");
         }
         EntityManager em = emf.createEntityManager();
         Person person = new Person(p);
-        //Test if city exist
         try {
             CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
             if (ci != null) {
@@ -48,7 +49,6 @@ public class PersonFacade {
             person.setHobbies(new ArrayList<>());
 
             for (int i = 0; i < p.getHobbies().size(); i++) {
-                //System.out.println(p.getHobbies().get(i) + "Inside loop");
                 Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
                 if (h != null) {
                     person.addHobby(h);
@@ -123,60 +123,55 @@ public class PersonFacade {
 
     public PersonDTO updatePerson(PersonDTO p) throws MissingFieldsException {
         EntityManager em = emf.createEntityManager();
-        if (p.getFirstName() == null || p.getLastName() == null) {
+        if (p == null) {
             throw new MissingFieldsException("One or more fields are missing!");
-        }
+        } else {
 
-        Person entityPerson = em.find(Person.class, p.getId());
-        entityPerson.setAddress(new Address(p.getAddress()));
-        entityPerson.setPhone(new ArrayList<>());
+            Person entityPerson = em.find(Person.class, p.getId());
+            entityPerson.setFirstName(p.getFirstName());
+            entityPerson.setLastName(p.getLastName());
+            entityPerson.setAddress(new Address(p.getAddress()));
+            entityPerson.setPhone(new ArrayList<>());
 
-        for (PhoneDTO pDTO : p.getPhones()) {
-            entityPerson.addPhone(new Phone(pDTO));
-        }
-
-
-        //      Address entityAddres = em.find(Address.class,p.getAddress().getId());
-        //        entityPerson.setAddress(em.find(Address.class,p.getAddress().getId()));
-
-        List<Phone> ph = entityPerson.getPhone();
-
-
-        try {
-
-            CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
-            if (ci != null) {
-                entityPerson.getAddress().setCityInfo(ci);
+            for (PhoneDTO pDTO : p.getPhones()) {
+                entityPerson.addPhone(new Phone(pDTO));
             }
 
-            List<Hobby> loopList = entityPerson.getHobbies();
+            try {
 
-            for (int i = 0; i < p.getHobbies().size(); i++) {
-                Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
-                if (h != null) {
-                    for (int j = 0; j < loopList.size(); j++) {
-                        Hobby eh = loopList.get(j);
-                        if (eh == h) {
-                            continue;
-                        } else {
-                            entityPerson.addHobby(h);
-                        }
-                    }
-                } else {
-                    entityPerson.addHobby(new Hobby(p.getHobbies().get(i)));
+                CityInfo ci = searchZips(p.getAddress().getCityInfoDTO().getZipcode(), em);
+                if (ci != null) {
+                    entityPerson.getAddress().setCityInfo(ci);
                 }
-            }
-        } catch (NoResultException e) {
-            throw new MissingFieldsException("fejl!: " + e);
-        }
 
-        try {
-            em.getTransaction().begin();
-            em.merge(entityPerson);
-            em.getTransaction().commit();
-            return new PersonDTO(entityPerson);
-        } finally {
-            em.close();
+                List<Hobby> loopList = entityPerson.getHobbies();
+                for (int i = 0; i < p.getHobbies().size(); i++) {
+                    Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
+                    if (h != null) {
+                        for (int j = 0; j < loopList.size(); j++) {
+                            Hobby eh = loopList.get(j);
+                            if (eh == h) {
+                                continue;
+                            } else {
+                                entityPerson.addHobby(h);
+                            }
+                        }
+                    } else {
+                        entityPerson.addHobby(new Hobby(p.getHobbies().get(i)));
+                    }
+                }
+            } catch (Exception e) {
+                throw new MissingFieldsException("fejl!: " + e);
+            }
+
+            try {
+                em.getTransaction().begin();
+                em.merge(entityPerson);
+                em.getTransaction().commit();
+                return new PersonDTO(entityPerson);
+            } finally {
+                em.close();
+            }
         }
     }
 

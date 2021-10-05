@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+@Table(name = "HOBBY", uniqueConstraints={@UniqueConstraint(columnNames ={"ID","NAME"})})
 public class Hobby {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
