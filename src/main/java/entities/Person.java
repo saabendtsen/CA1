@@ -1,13 +1,10 @@
 package entities;
 
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
-import dtos.PhoneDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
@@ -87,8 +84,15 @@ public class Person {
         }
     }
 
+    public void removePhone(Phone p) {
+        if (p != null) {
+            this.phone.remove(p);
+            p.setPerson(null);
+        }
+    }
+
     public Person(PersonDTO personDTO) {
-        if(personDTO.getId() != null){
+        if (personDTO.getId() != null) {
             this.id = personDTO.getId();
         }
         this.firstName = personDTO.getFirstName();

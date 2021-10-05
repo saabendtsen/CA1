@@ -4,17 +4,17 @@ import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.*;
+import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PersonFacade {
 
@@ -117,7 +117,6 @@ public class PersonFacade {
         }
     }
 
-
     public PersonDTO getSinglePerson(long id) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Person p = em.find(Person.class, id);
@@ -128,6 +127,7 @@ public class PersonFacade {
         }
     }
 
+    // TODO: 05-10-2021 update på id, skaber ny Phone/addresse id 
     public PersonDTO updatePerson(PersonDTO p) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         if (p != null) {
@@ -135,11 +135,31 @@ public class PersonFacade {
             entityPerson.setFirstName(p.getFirstName());
             entityPerson.setLastName(p.getLastName());
             entityPerson.setAddress(new Address(p.getAddress()));
-            entityPerson.setPhone(new ArrayList<>());
 
-            for (PhoneDTO pDTO : p.getPhones()) {
-                entityPerson.addPhone(new Phone(pDTO));
+            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
+                Phone phone = entityPerson.getPhone().get(i);
+                for (PhoneDTO dtoPhone : p.getPhones()) {
+                    if (phone.getNumber() == dtoPhone.getNumber()) {
+                        break;
+                    } else {
+                        entityPerson.addPhone(new Phone(dtoPhone));
+                        entityPerson.removePhone(entityPerson.getPhone().get(i)); // Sletter kun den gamle relation ikke hele row
+                    }
+                }
             }
+
+            // TODO: 05-10-2021 funker ikke endnu
+//            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
+//                boolean check = false;
+//                for (PhoneDTO dtoPhone : p.getPhones()) {
+//                    if (entityPerson.getPhone().get(i).getNumber() == dtoPhone.getNumber()) {
+//                        check = true;
+//                    }
+//                }
+//                if (!check) {
+//
+//                }
+//            }
 
             try {
 
@@ -187,7 +207,7 @@ public class PersonFacade {
             em.getTransaction().begin();
             Person person = em.find(Person.class, id);
             if (person == null) {
-                throw new PersonNotFoundException("Person with id: "+id+" does not exist");
+                throw new PersonNotFoundException("Person with id: " + id + " does not exist");
             }
             em.remove(person);
             em.getTransaction().commit();
@@ -215,7 +235,7 @@ public class PersonFacade {
             query.setParameter("name", name);
             List<Person> persons = query.getResultList();
             if (persons.size() == 0) {
-                throw new PersonNotFoundException("No persons with hobby: "+name+" found!");
+                throw new PersonNotFoundException("No persons with hobby: " + name + " found!");
             }
             return PersonDTO.getDtos(persons);
         } finally {
@@ -233,7 +253,7 @@ public class PersonFacade {
             query.setParameter("zipcode", zipcode);
             List<Person> personList = query.getResultList();
             if (personList.size() == 0) {
-                throw new MissingFieldsException("No persons living in: "+zipcode+" found");
+                throw new MissingFieldsException("No persons living in: " + zipcode + " found");
             }
             return PersonDTO.getDtos(personList);
         } finally {

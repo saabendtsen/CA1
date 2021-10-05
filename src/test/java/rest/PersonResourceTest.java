@@ -183,7 +183,7 @@ class PersonResourceTest {
     void getAllPersonInCity() {
         given()
                 .contentType(ContentType.JSON)
-                .get("/person/city/" + person.getAddress().getCityInfo().getCity())
+                .get("/person/zipcode/" + person.getAddress().getCityInfo().getZipcode())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
