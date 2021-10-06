@@ -1,6 +1,10 @@
 package entities;
 
+import dtos.PhoneDTO;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "phone")
 @Entity
@@ -15,13 +19,26 @@ public class Phone {
     @ManyToOne
     private Person person;
 
-
     public Phone() {
     }
 
     public Phone(int number, String description) {
         this.number = number;
         this.description = description;
+    }
+
+    public Phone(PhoneDTO phoneDTO) {
+        this.id = phoneDTO.getId();
+        this.number = phoneDTO.getNumber();
+        this.description = phoneDTO.getDescription();
+    }
+
+    public List<Phone> toDtos(List<PhoneDTO> phoneDTOList){
+        List<Phone> phoneList = new ArrayList();
+        for (PhoneDTO pDTO: phoneDTOList) {
+            phoneList.add(new Phone(pDTO));
+        }
+        return phoneList;
     }
 
     public Long getId() {

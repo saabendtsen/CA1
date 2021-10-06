@@ -1,5 +1,8 @@
 package entities;
 
+import dtos.HobbyDTO;
+import dtos.PhoneDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +10,28 @@ import java.util.List;
 
 @Entity
 @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+<<<<<<< HEAD
+=======
+@Table(name = "HOBBY", uniqueConstraints={@UniqueConstraint(columnNames ={"ID","NAME"})})
+>>>>>>> main
 public class Hobby {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
     private String description;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Person> persons;
 
+    public Hobby() {
+    }
+
+    public Hobby(String name, String description, List<Person> persons) {
+        this.name = name;
+        this.description = description;
+        this.persons = persons;
+    }
 
     public Hobby(String name, String description) {
         this.name = name;
@@ -23,11 +39,17 @@ public class Hobby {
         this.persons = new ArrayList<>();
     }
 
-    public List<Person> addPersons(Person person) {
-        if (person != null) {
-            this.persons.add(person);
-            person.addHobby(this);
+    public Hobby(HobbyDTO hDTO) {
+        if (hDTO.getId() != null) {
+            this.id = hDTO.getId();
         }
+        this.name = hDTO.getName();
+        this.description = hDTO.getDescription();
+        this.persons = new ArrayList<>();
+    }
+
+    public List<Person> addPersons(Person person) {
+        this.persons.add(person);
         return persons;
     }
 
@@ -52,20 +74,20 @@ public class Hobby {
         this.description = description;
     }
 
-    public Hobby() {
-    }
-
-    public Hobby(String name, String description, List<Person> persons) {
-        this.name = name;
-        this.description = description;
-        this.persons = persons;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Hobby> toDtos(List<HobbyDTO> hobbies) {
+        List<Hobby> hobbyList = new ArrayList();
+        for (HobbyDTO pDTO : hobbies) {
+            hobbyList.add(new Hobby(pDTO));
+        }
+        return hobbyList;
+
     }
 }

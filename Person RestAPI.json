@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "018c2261-9faf-4507-823b-cc19409ad07b",
+		"name": "Person RestAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All persons",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get person with id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Person",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Fornavn\",\r\n    \"lastName\": \"Efternavn\",\r\n    \"address\": {\r\n        \"street\": \"vej 123\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"3400\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\"\r\n        },\r\n        {\r\n            \"name\": \"Amatør\",\r\n            \"description\": \"https://www.Amatør.dk\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Person",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Person",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"firstName\": \"Younes\",\r\n    \"lastName\": \"Karim\",\r\n    \"address\": {\r\n        \"street\": \"vej 196\",\r\n        \"additionalInfo\": \"st. th.\",\r\n        \"cityInfoDTO\": {\r\n            \"zipcode\": \"2900\",\r\n            \"city\": \"Hellerup\"\r\n        }\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": 12345678,\r\n            \"description\": \"+45\"\r\n        }\r\n    ],\r\n    \"hobbies\": [\r\n        {\r\n            \"name\": \"Bowling\",\r\n            \"description\": \"https://en.wikipedia.org/wiki/Bowling\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All persons with hobby",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/hobby/Amatør",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						"hobby",
+						"Amatør"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Persons in a zipcode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/zipcode/3400",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						"zipcode",
+						"3400"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Zipcodes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/CA1/api/person/zipcodes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CA1",
+						"api",
+						"person",
+						"zipcodes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

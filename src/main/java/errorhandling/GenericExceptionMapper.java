@@ -33,16 +33,17 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
         Response.StatusType type = getStatusType(ex);
         ExceptionDTO err;
-        if (ex instanceof WebApplicationException) {
-            err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
-        } else {
 
-            err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
+        if (ex instanceof PersonNotFoundException) {
+            err = new ExceptionDTO(type.getStatusCode(), ex.getMessage());
+        } else if (ex instanceof MissingFieldsException){
+            err = new ExceptionDTO(type.getStatusCode(), ex.getMessage());
+        } else if(ex instanceof WebApplicationException) {
+            err = new ExceptionDTO(type.getStatusCode(), ex.getMessage());
+        } else {
+            err = new ExceptionDTO(type.getStatusCode(), "Undesired Error has occurred! --> "+ ex.getMessage());
         }
-        return Response.status(type.getStatusCode())
-                .entity(gson.toJson(err))
-                .type(MediaType.APPLICATION_JSON).
-                build();
+        return Response.status(type.getStatusCode()).entity(gson.toJson(err)).type(MediaType.APPLICATION_JSON).build();
     }
 
     private Response.StatusType getStatusType(Throwable ex) {
