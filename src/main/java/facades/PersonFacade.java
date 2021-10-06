@@ -7,11 +7,15 @@ import entities.*;
 import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
+import org.glassfish.jersey.internal.guava.Lists;
 
+import javax.lang.model.element.Element;
 import javax.persistence.*;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -140,33 +144,18 @@ public class PersonFacade {
 
             if (p.getAddress().getId() == null) {
                 entityPerson.setAddress(new Address(p.getAddress()));
+
+            } else {
+                entityPerson.getAddress().setAdditionalInfo(p.getAddress().getAdditionalInfo());
+                entityPerson.getAddress().setStreet(p.getAddress().getStreet());
             }
 
-            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
-                for (int j = 0; j < p.getPhones().size() ; j++) {
-                    if (entityPerson.getPhone().get(i).getNumber() == p.getPhones().get(j).getNumber()) {
-                        System.out.println("1: "+entityPerson.getPhone().get(i).getNumber()+" == "+p.getPhones().get(j).getNumber());
-                        break;
-                    } else {
-                        System.out.println("2: "+p.getPhones().get(j));
-                        entityPerson.addPhone(new Phone(p.getPhones().get(j)));
-                    }
-                }
-            }
 
-            // TODO: 05-10-2021 funker ikke endnu
-            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
-                boolean check = false;
-                for (int j = 0; j < p.getPhones().size() ; j++) {
-                    if (entityPerson.getPhone().get(i).getNumber() == p.getPhones().get(j).getNumber()) {
-                        check = true;
-                        System.out.println(check);
-                    }
+            for (PhoneDTO phoneDTO : p.getPhones()) {
+                if (phoneDTO.getId() == null) {                  // check if the dto value of is null
+                    entityPerson.addPhone(new Phone(phoneDTO)); // adds a phone if the dto doesn't have a phone already
                 }
-                if (!check) {
-                    System.out.println("slet: "+entityPerson.getPhone().get(i).getNumber());
-                    entityPerson.removePhone(entityPerson.getPhone().get(i));
-                }
+
             }
 
             try {
