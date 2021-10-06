@@ -2,8 +2,6 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;

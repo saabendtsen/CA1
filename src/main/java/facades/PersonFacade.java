@@ -4,21 +4,14 @@ import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.*;
-import errorhandling.GenericExceptionMapper;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
-import org.glassfish.jersey.internal.guava.Lists;
 
-import javax.lang.model.element.Element;
-import javax.persistence.*;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PersonFacade {
 
@@ -165,20 +158,19 @@ public class PersonFacade {
                     entityPerson.getAddress().setCityInfo(ci);
                 }
 
-                List<Hobby> loopList = entityPerson.getHobbies();
+
                 for (int i = 0; i < p.getHobbies().size(); i++) {
-                    Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
-                    if (h != null) {
-                        for (int j = 0; j < loopList.size(); j++) {
-                            Hobby eh = loopList.get(j);
-                            if (eh == h) {
-                                continue;
-                            } else {
-                                entityPerson.addHobby(h);
+                    if (p.getHobbies().get(i).getId() == null) {
+                        Hobby h = searchHobbys(p.getHobbies().get(i).getName(), em);
+                        if (h != null) {
+                            entityPerson.addHobby(h);
+                        } else {
+                            try {
+                                entityPerson.addHobby(new Hobby(p.getHobbies().get(i)));
+                            } catch (Exception e) {
+                                throw new MissingFieldsException("Existing Hobby missing ID input");
                             }
                         }
-                    } else {
-                        entityPerson.addHobby(new Hobby(p.getHobbies().get(i)));
                     }
                 }
             } catch (Exception e) {
@@ -190,6 +182,10 @@ public class PersonFacade {
                 em.merge(entityPerson);
                 em.getTransaction().commit();
                 return new PersonDTO(entityPerson);
+
+            } catch (Exception e) {
+                throw new PersonNotFoundException("hov hov kammerat --> DB fejl");
+
             } finally {
                 em.close();
             }
