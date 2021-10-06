@@ -49,7 +49,6 @@ public class PersonResource {
     public Response editPerson(String person) throws PersonNotFoundException {
         PersonDTO dto = gson.fromJson(person, PersonDTO.class);
         dto = pf.updatePerson(dto);
-        System.out.println(dto);
         return Response.ok(gson.toJson(dto), "application/json").build();
     }
 

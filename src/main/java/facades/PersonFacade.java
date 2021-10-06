@@ -134,15 +134,22 @@ public class PersonFacade {
             Person entityPerson = em.find(Person.class, p.getId());
             entityPerson.setFirstName(p.getFirstName());
             entityPerson.setLastName(p.getLastName());
-            entityPerson.setAddress(new Address(p.getAddress()));
+
+//          Address entityAddress = em.find(Address.class,p.getAddress().getId());
+//          entityPerson.setAddress(em.find(Address.class,p.getAddress().getId()));
+
+            if (p.getAddress().getId() == null) {
+                entityPerson.setAddress(new Address(p.getAddress()));
+            }
 
             for (int i = 0; i < entityPerson.getPhone().size(); i++) {
-                Phone phone = entityPerson.getPhone().get(i);
-                for (PhoneDTO dtoPhone : p.getPhones()) {
-                    if (phone.getNumber() == dtoPhone.getNumber()) {
-                        continue;
+                for (int j = 0; j < p.getPhones().size() ; j++) {
+                    if (entityPerson.getPhone().get(i).getNumber() == p.getPhones().get(j).getNumber()) {
+                        System.out.println("1: "+entityPerson.getPhone().get(i).getNumber()+" == "+p.getPhones().get(j).getNumber());
+                        break;
                     } else {
-                        entityPerson.addPhone(new Phone(dtoPhone));
+                        System.out.println("2: "+p.getPhones().get(j));
+                        entityPerson.addPhone(new Phone(p.getPhones().get(j)));
                     }
                 }
             }
@@ -150,12 +157,14 @@ public class PersonFacade {
             // TODO: 05-10-2021 funker ikke endnu
             for (int i = 0; i < entityPerson.getPhone().size(); i++) {
                 boolean check = false;
-                for (PhoneDTO dtoPhone : p.getPhones()) {
-                    if (entityPerson.getPhone().get(i).getNumber() == dtoPhone.getNumber()) {
+                for (int j = 0; j < p.getPhones().size() ; j++) {
+                    if (entityPerson.getPhone().get(i).getNumber() == p.getPhones().get(j).getNumber()) {
                         check = true;
+                        System.out.println(check);
                     }
                 }
                 if (!check) {
+                    System.out.println("slet: "+entityPerson.getPhone().get(i).getNumber());
                     entityPerson.removePhone(entityPerson.getPhone().get(i));
                 }
             }

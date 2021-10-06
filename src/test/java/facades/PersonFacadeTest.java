@@ -1,7 +1,6 @@
 package facades;
 
 import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
 import errorhandling.MissingFieldsException;
