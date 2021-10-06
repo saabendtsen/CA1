@@ -140,26 +140,25 @@ public class PersonFacade {
                 Phone phone = entityPerson.getPhone().get(i);
                 for (PhoneDTO dtoPhone : p.getPhones()) {
                     if (phone.getNumber() == dtoPhone.getNumber()) {
-                        break;
+                        continue;
                     } else {
                         entityPerson.addPhone(new Phone(dtoPhone));
-                        entityPerson.removePhone(entityPerson.getPhone().get(i)); // Sletter kun den gamle relation ikke hele row
                     }
                 }
             }
 
             // TODO: 05-10-2021 funker ikke endnu
-//            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
-//                boolean check = false;
-//                for (PhoneDTO dtoPhone : p.getPhones()) {
-//                    if (entityPerson.getPhone().get(i).getNumber() == dtoPhone.getNumber()) {
-//                        check = true;
-//                    }
-//                }
-//                if (!check) {
-//
-//                }
-//            }
+            for (int i = 0; i < entityPerson.getPhone().size(); i++) {
+                boolean check = false;
+                for (PhoneDTO dtoPhone : p.getPhones()) {
+                    if (entityPerson.getPhone().get(i).getNumber() == dtoPhone.getNumber()) {
+                        check = true;
+                    }
+                }
+                if (!check) {
+                    entityPerson.removePhone(entityPerson.getPhone().get(i));
+                }
+            }
 
             try {
 
