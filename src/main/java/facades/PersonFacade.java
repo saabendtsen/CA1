@@ -269,4 +269,22 @@ public class PersonFacade {
         }
     }
 
+    public PhoneDTO deletePhone(long id) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            Phone phone = em.find(Phone.class, id);
+            Person person = em.find(Person.class, phone.getId());
+            if(phone == null){
+                throw new PersonNotFoundException("Phone with id : " + id + " does not exist");
+            }
+            em.remove(phone);
+            person.removePhone(phone);
+            em.merge(person);
+            em.getTransaction().commit();
+            return new PhoneDTO(phone);
+        }finally {
+            em.close();
+        }
+    }
 }
