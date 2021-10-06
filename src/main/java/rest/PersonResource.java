@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
 import errorhandling.MissingFieldsException;
 import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
@@ -81,5 +82,14 @@ public class PersonResource {
     public Response getAllPersonInCity(@PathParam("zipcode") String zipcode) throws MissingFieldsException {
         List<PersonDTO> dto = pf.getAllPersonInZipcode(zipcode);
         return Response.ok(gson.toJson(dto), "application/json").build();
+    }
+
+    @DELETE
+    @Path("/phone/{id}")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response deletePhone(@PathParam("id") long id) throws PersonNotFoundException {
+        PhoneDTO dto = pf.deletePhone(id);
+        return Response.ok("{\"status\" : \"removed: " + gson.toJson(dto) + "\"}", "application/json").build();
     }
 }
