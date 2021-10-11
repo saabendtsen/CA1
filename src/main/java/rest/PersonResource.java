@@ -90,6 +90,6 @@ public class PersonResource {
     @Consumes("application/json")
     public Response deletePhone(@PathParam("id") long id) throws PersonNotFoundException {
         PhoneDTO dto = pf.deletePhone(id);
-        return Response.ok("{\"status\" : \"removed: " + gson.toJson(dto) + "\"}", "application/json").build();
+        return Response.ok(gson.toJson(dto), "application/json").build();
     }
 }
